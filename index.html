@@ -240,16 +240,17 @@ html, body {
 
 /* ── turn arrows ── */
 .turn-arrow {
-  position:absolute; bottom:18px;
-  font-family:'Cinzel', serif; font-size:10px;
-  color:#7a5820; letter-spacing:3px; opacity:.5;
-  cursor:pointer; z-index:20; user-select:none;
-  padding:6px 10px;
+  position:absolute; bottom:12px;
+  font-family:'Cinzel', serif; font-size:11px;
+  color:#7a5820; letter-spacing:3px; opacity:.7;
+  cursor:pointer; z-index:9999; user-select:none;
+  padding:14px 20px;
   transition: opacity .2s, color .2s;
+  pointer-events:all;
 }
 .turn-arrow:hover { opacity:1; color:#b5892a; }
-.turn-arrow.right { right:38px; }
-.turn-arrow.left  { left:38px; }
+.turn-arrow.right { right:20px; }
+.turn-arrow.left  { left:20px; }
 
 /* ── avatar (frontispiece left) ── */
 .avatar-wrap {
