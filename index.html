@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
 html, body {
   width:100%; height:100%;
   background: radial-gradient(ellipse at center, #120800 0%, #060300 100%);
@@ -21,187 +20,183 @@ html, body {
 .state.active { display:flex; }
 
 /* ══════════════════════════════════════
-   STATE 1 — COVER
+   COVER
 ══════════════════════════════════════ */
-#s-cover {
-  cursor:pointer;
-}
+#s-cover { cursor:pointer; }
 .cover-wrap {
   display:flex;
   filter: drop-shadow(-16px 12px 48px rgba(0,0,0,.9)) drop-shadow(0 0 60px rgba(90,50,0,.3));
   transition: transform .15s ease;
 }
 .cover-wrap:hover { transform: scale(1.012); }
-
 .cover-spine {
   width:32px;
   background: linear-gradient(90deg, #080400, #1e0e00, #120900, #1e0e00, #080400);
-  border-top: 2px solid #4a3008;
-  border-bottom: 2px solid #4a3008;
-  border-left: 2px solid #2a1a04;
-  position:relative;
-  border-radius: 3px 0 0 3px;
+  border-top:2px solid #4a3008; border-bottom:2px solid #4a3008; border-left:2px solid #2a1a04;
+  position:relative; border-radius:3px 0 0 3px;
 }
 .cover-spine::before {
-  content:'';
-  position:absolute; left:50%; top:8%; bottom:8%; width:1px;
+  content:''; position:absolute; left:50%; top:8%; bottom:8%; width:1px;
   background: linear-gradient(180deg, transparent, #b5892a55, #d4a84388, #b5892a55, transparent);
   transform:translateX(-50%);
 }
-
 .cover-board {
   width:400px; height:560px;
-  background:
-    linear-gradient(135deg, #1e0d02 0%, #2a1500 20%, #1a0b02 50%, #221200 75%, #140900 100%);
-  border: 3px solid #8a6520;
-  border-left: none;
-  border-radius: 0 4px 4px 0;
-  position:relative;
-  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+  background: linear-gradient(135deg, #1e0d02 0%, #2a1500 20%, #1a0b02 50%, #221200 75%, #140900 100%);
+  border:3px solid #8a6520; border-left:none; border-radius:0 4px 4px 0;
+  position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
   overflow:hidden;
 }
-
-/* outer filigree border */
-.cover-board::before {
-  content:'';
-  position:absolute; inset:14px;
-  border: 1px solid rgba(181,137,42,.4);
-  border-radius:2px;
-  pointer-events:none;
-}
-/* inner filigree border */
-.cover-board::after {
-  content:'';
-  position:absolute; inset:18px;
-  border: 1px solid rgba(181,137,42,.15);
-  border-radius:2px;
-  pointer-events:none;
-}
-
-.cover-corner {
-  position:absolute; width:36px; height:36px;
-  color:#b5892a; font-size:22px; opacity:.7; pointer-events:none;
-  line-height:1;
-}
+.cover-board::before { content:''; position:absolute; inset:14px; border:1px solid rgba(181,137,42,.4); border-radius:2px; pointer-events:none; }
+.cover-board::after  { content:''; position:absolute; inset:18px; border:1px solid rgba(181,137,42,.15); border-radius:2px; pointer-events:none; }
+.cover-corner { position:absolute; width:36px; height:36px; color:#b5892a; font-size:22px; opacity:.7; pointer-events:none; line-height:1; }
 .cover-corner.tl { top:22px; left:22px; }
 .cover-corner.tr { top:22px; right:22px; transform:scaleX(-1); }
 .cover-corner.bl { bottom:22px; left:22px; transform:scaleY(-1); }
 .cover-corner.br { bottom:22px; right:22px; transform:scale(-1); }
-
 .cover-porthole {
-  width:148px; height:148px;
-  border-radius:50%;
-  border: 5px solid #b5892a;
-  box-shadow:
-    0 0 0 2px #5a3a0a,
-    0 0 0 8px #0e0700,
-    0 0 0 10px #7a5418,
-    0 0 0 12px #0e0700,
-    0 0 40px rgba(181,137,42,.25);
-  overflow:hidden;
-  pointer-events:none;
-  position:relative; z-index:2;
+  width:148px; height:148px; border-radius:50%;
+  border:5px solid #b5892a;
+  box-shadow: 0 0 0 2px #5a3a0a, 0 0 0 8px #0e0700, 0 0 0 10px #7a5418, 0 0 0 12px #0e0700, 0 0 40px rgba(181,137,42,.25);
+  overflow:hidden; pointer-events:none; position:relative; z-index:2;
 }
 .cover-porthole img { width:100%; height:100%; object-fit:cover; }
-
-/* rivet dots around porthole */
-.cover-rivet {
-  position:absolute; width:10px; height:10px; border-radius:50%;
-  background: radial-gradient(circle at 35% 30%, #e0b84a, #7a5010);
-  border:1px solid #3a2008;
-  box-shadow: 0 1px 3px rgba(0,0,0,.6);
-  z-index:3;
-}
-
 .cover-title {
-  font-family:'Cinzel', serif;
-  font-size:26px; font-weight:700;
-  color:#d4a843;
-  letter-spacing:4px;
-  text-align:center;
-  line-height:1.5;
-  text-shadow: 0 0 40px rgba(212,168,67,.35), 0 2px 4px rgba(0,0,0,.8);
+  font-family:'Cinzel', serif; font-size:26px; font-weight:700;
+  color:#d4a843; letter-spacing:4px; text-align:center; line-height:1.5;
+  text-shadow:0 0 40px rgba(212,168,67,.35), 0 2px 4px rgba(0,0,0,.8);
   pointer-events:none; position:relative; z-index:2;
 }
-
 .cover-rule {
   width:220px; height:1px;
   background: linear-gradient(90deg, transparent, #b5892a 20%, #d4a843 50%, #b5892a 80%, transparent);
   position:relative; z-index:2; pointer-events:none;
 }
-.cover-rule::before, .cover-rule::after {
-  content:'◆';
-  position:absolute; top:50%; transform:translateY(-50%);
-  color:#b5892a; font-size:7px; background:transparent;
-}
-.cover-rule::before { left:30px; }
-.cover-rule::after  { right:30px; }
-
 .cover-byline {
-  font-family:'IM Fell English', serif;
-  font-style:italic;
+  font-family:'IM Fell English', serif; font-style:italic;
   font-size:11px; color:#9a7530; letter-spacing:3px;
-  pointer-events:none; position:relative; z-index:2;
-  text-align:center;
+  pointer-events:none; position:relative; z-index:2; text-align:center;
 }
-
 .cover-open-hint {
   position:absolute; bottom:28px;
-  font-family:'Cinzel', serif;
-  font-size:9px; color:#7a5820; letter-spacing:4px;
+  font-family:'Cinzel', serif; font-size:9px; color:#7a5820; letter-spacing:4px;
   opacity:.55; pointer-events:none; z-index:2;
 }
 
 /* ══════════════════════════════════════
-   SHARED BOOK LAYOUT (states 2 & 3)
+   SHARED BOOK LAYOUT
 ══════════════════════════════════════ */
+.book-outer {
+  position:relative;
+  display:flex;
+  align-items:stretch;
+}
+
+/* ── ORB SIDEBAR (left) ── */
+.orb-sidebar {
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:88px;
+  background: linear-gradient(180deg, #1a0a00, #2a1400, #1a0a00);
+  border-right:2px solid #6a4a10;
+  border-top:2px solid #4a3008;
+  border-bottom:2px solid #4a3008;
+  border-radius:4px 0 0 4px;
+  box-shadow: inset -4px 0 12px rgba(0,0,0,.5), 2px 0 16px rgba(0,0,0,.6);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:10px; padding:16px 0;
+  z-index:100;
+  transition: transform .35s cubic-bezier(.4,0,.2,1);
+}
+.orb-sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+/* brass pull tab always visible */
+.orb-tab {
+  position:absolute;
+  right:-22px; top:50%; transform:translateY(-50%);
+  width:22px; height:64px;
+  background: linear-gradient(90deg, #6a4a10, #b5892a, #8a6520);
+  border:1px solid #d4a843;
+  border-left:none;
+  border-radius:0 6px 6px 0;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:2px 0 8px rgba(0,0,0,.5);
+  z-index:101;
+  transition: background .2s;
+}
+.orb-tab:hover { background: linear-gradient(90deg, #8a6520, #d4a843, #b5892a); }
+.orb-tab-icon { color:#1a0800; font-size:14px; line-height:1; }
+
+.orb-item {
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+  position:relative; cursor:pointer;
+  transition: transform .15s ease;
+}
+.orb-item:hover .orb-circle { box-shadow: 0 0 0 2px #d4a843, 0 0 20px rgba(212,168,67,.5); }
+.orb-item.locked { cursor:default; pointer-events:none; }
+
+.orb-circle {
+  width:52px; height:52px; border-radius:50%;
+  border:3px solid #8a6520;
+  box-shadow:0 0 0 1px #3a2008, 0 0 8px rgba(0,0,0,.6);
+  overflow:hidden; position:relative;
+  background:#0e0700;
+  transition: box-shadow .2s, border-color .2s;
+}
+.orb-circle img { width:100%; height:100%; object-fit:cover; }
+.orb-locked-overlay {
+  position:absolute; inset:0;
+  background:rgba(0,0,0,.62);
+  display:flex; align-items:center; justify-content:center;
+  font-size:16px; color:#6a4a10;
+}
+.orb-label-tab {
+  background: linear-gradient(90deg, #4a3008, #6a4a14, #4a3008);
+  border:1px solid #8a6520;
+  border-radius:3px;
+  padding:2px 7px;
+  font-family:'Cinzel', serif; font-size:7px; color:#d4a843;
+  letter-spacing:1.5px; white-space:nowrap;
+  box-shadow:0 1px 4px rgba(0,0,0,.5);
+}
+.orb-item.locked .orb-label-tab { color:#5a4010; opacity:.5; }
+
+.orb-separator { width:50px; height:1px; background: linear-gradient(90deg, transparent, #b5892a44, transparent); }
+
+/* ── BOOK ── */
 .book {
   display:flex;
   width:860px; height:580px;
-  box-shadow:
-    -8px 8px 40px rgba(0,0,0,.9),
-    8px 8px 40px rgba(0,0,0,.9),
-    0 0 0 1px #2a1800;
+  box-shadow:-8px 8px 40px rgba(0,0,0,.9), 8px 8px 40px rgba(0,0,0,.9), 0 0 0 1px #2a1800;
   border-radius:2px;
+  margin-left:0;
+  transition: margin-left .35s cubic-bezier(.4,0,.2,1);
 }
+.book.sidebar-open { margin-left:66px; }
 
 .page {
-  flex:1;
-  position:relative;
-  overflow:hidden;
-  background: #f2e4c0;
+  flex:1; position:relative; overflow:hidden;
+  background:#f2e4c0;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E"),
     radial-gradient(ellipse at 20% 15%, rgba(255,248,220,.7) 0%, transparent 55%),
     radial-gradient(ellipse at 80% 85%, rgba(180,145,90,.2) 0%, transparent 55%);
 }
-.page.left  {
-  border-radius:2px 0 0 2px;
-  box-shadow: inset -10px 0 30px rgba(80,40,0,.18), inset 6px 0 12px rgba(255,235,180,.25);
-}
-.page.right {
-  border-radius:0 2px 2px 0;
-  box-shadow: inset 10px 0 30px rgba(80,40,0,.18), inset -6px 0 12px rgba(255,235,180,.25);
-}
-/* inner margin border */
-.page::before {
-  content:''; position:absolute; inset:20px;
-  border: 1px solid rgba(120,80,20,.2);
-  pointer-events:none; z-index:1;
-}
+.page.left  { border-radius:2px 0 0 2px; box-shadow:inset -10px 0 30px rgba(80,40,0,.18), inset 6px 0 12px rgba(255,235,180,.25); }
+.page.right { border-radius:0 2px 2px 0;  box-shadow:inset 10px 0 30px rgba(80,40,0,.18), inset -6px 0 12px rgba(255,235,180,.25); }
+.page::before { content:''; position:absolute; inset:20px; border:1px solid rgba(120,80,20,.2); pointer-events:none; z-index:1; }
 
 .spine-seam {
   width:12px; flex-shrink:0;
   background: linear-gradient(90deg, #1a0a00, #2e1600, #1a0a00);
-  box-shadow:
-    inset -3px 0 8px rgba(0,0,0,.6),
-    inset  3px 0 8px rgba(0,0,0,.6);
+  box-shadow:inset -3px 0 8px rgba(0,0,0,.6), inset 3px 0 8px rgba(0,0,0,.6);
   position:relative; z-index:10;
 }
 .spine-seam::after {
-  content:''; position:absolute;
-  left:50%; top:0; bottom:0; width:2px;
-  background: linear-gradient(180deg, transparent, #b5892a33, #d4a84355, #b5892a33, transparent);
+  content:''; position:absolute; left:50%; top:0; bottom:0; width:2px;
+  background:linear-gradient(180deg, transparent, #b5892a33, #d4a84355, #b5892a33, transparent);
   transform:translateX(-50%);
 }
 
@@ -211,85 +206,62 @@ html, body {
   display:flex; flex-direction:column;
 }
 
-/* ── page headings ── */
 .page-heading {
-  font-family:'Cinzel', serif;
-  font-size:14px; font-weight:700;
-  color:#2a1606; letter-spacing:6px; text-align:center;
-  margin-bottom:10px;
+  font-family:'Cinzel', serif; font-size:14px; font-weight:700;
+  color:#2a1606; letter-spacing:6px; text-align:center; margin-bottom:10px;
 }
 .heading-rule {
   width:100%; height:1px; margin-bottom:4px;
-  background: linear-gradient(90deg, transparent, #b5892a 25%, #d4a843 50%, #b5892a 75%, transparent);
+  background:linear-gradient(90deg, transparent, #b5892a 25%, #d4a843 50%, #b5892a 75%, transparent);
   position:relative;
 }
 .heading-rule.double::before {
-  content:''; position:absolute;
-  left:0; right:0; top:-4px; height:1px;
-  background: linear-gradient(90deg, transparent, #b5892a55 25%, #b5892a88 50%, #b5892a55 75%, transparent);
+  content:''; position:absolute; left:0; right:0; top:-4px; height:1px;
+  background:linear-gradient(90deg, transparent, #b5892a55 25%, #b5892a88 50%, #b5892a55 75%, transparent);
 }
 
-/* ── page numbers ── */
 .page-num {
   position:absolute; bottom:22px;
-  font-family:'Cinzel', serif; font-size:9px;
-  color:#7a5820; letter-spacing:3px; opacity:.6;
+  font-family:'Cinzel', serif; font-size:9px; color:#7a5820; letter-spacing:3px; opacity:.6;
 }
 .page-num.left  { left:42px; }
 .page-num.right { right:42px; }
 
-/* ── turn arrows ── */
 .turn-arrow {
   position:absolute; bottom:12px;
   font-family:'Cinzel', serif; font-size:11px;
   color:#7a5820; letter-spacing:3px; opacity:.7;
   cursor:pointer; z-index:9999; user-select:none;
   padding:14px 20px;
-  transition: opacity .2s, color .2s;
+  transition:opacity .2s, color .2s;
   pointer-events:all;
 }
 .turn-arrow:hover { opacity:1; color:#b5892a; }
 .turn-arrow.right { right:20px; }
 .turn-arrow.left  { left:20px; }
 
-/* ── avatar (frontispiece left) ── */
-.avatar-wrap {
-  flex:1; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:20px;
-}
+/* ── AVATAR (frontispiece) ── */
+.avatar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
 .porthole-lg {
   width:200px; height:200px; border-radius:50%; overflow:hidden;
-  border: 5px solid #b5892a;
-  box-shadow:
-    0 0 0 2px #5a3a0a,
-    0 0 0 10px #1e1000,
-    0 0 0 12px #7a5418,
-    0 0 30px rgba(181,137,42,.3);
-  position:relative;
+  border:5px solid #b5892a;
+  box-shadow:0 0 0 2px #5a3a0a, 0 0 0 10px #1e1000, 0 0 0 12px #7a5418, 0 0 30px rgba(181,137,42,.3);
 }
 .porthole-lg img { width:100%; height:100%; object-fit:cover; }
 .rivet-lg {
   position:absolute; width:13px; height:13px; border-radius:50%;
-  background: radial-gradient(circle at 35% 30%, #e0b84a, #6a4010);
+  background:radial-gradient(circle at 35% 30%, #e0b84a, #6a4010);
   border:1px solid #3a2008; box-shadow:0 1px 3px rgba(0,0,0,.6);
 }
-.avatar-name-lg {
-  font-family:'Cinzel', serif; font-size:20px; font-weight:600;
-  color:#1a0e04; letter-spacing:12px; text-align:center;
-}
-.avatar-sub-lg {
-  font-family:'IM Fell English', serif; font-style:italic;
-  font-size:12px; color:#6b4c1e; letter-spacing:3px; opacity:.75;
-  text-align:center;
-}
+.avatar-name-lg { font-family:'Cinzel', serif; font-size:20px; font-weight:600; color:#1a0e04; letter-spacing:12px; text-align:center; }
+.avatar-sub-lg  { font-family:'IM Fell English', serif; font-style:italic; font-size:12px; color:#6b4c1e; letter-spacing:3px; opacity:.75; text-align:center; }
 .avatar-rule-lg {
   width:140px; height:1px;
-  background: linear-gradient(90deg, transparent, #b5892a, transparent);
+  background:linear-gradient(90deg, transparent, #b5892a, transparent);
   position:relative;
 }
 .avatar-rule-lg::after {
-  content:'◆'; position:absolute; left:50%; top:50%;
-  transform:translate(-50%,-50%);
+  content:'◆'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
   color:#b5892a; font-size:7px; background:#f2e4c0; padding:0 5px;
 }
 
@@ -297,203 +269,588 @@ html, body {
 .toc-body { flex:1; padding-top:14px; }
 .toc-item {
   display:flex; align-items:baseline;
-  font-family:'Cormorant Garamond', serif; font-size:13px;
-  color:#3a2510; margin-bottom:9px;
-  line-height:1.3;
+  font-family:'Cormorant Garamond', serif; font-size:13px; color:#3a2510;
+  margin-bottom:9px; line-height:1.3;
 }
-.toc-item-num {
-  font-family:'Cinzel', serif; font-size:9px;
-  color:#b5892a; letter-spacing:2px; margin-right:10px; flex-shrink:0;
-}
-.toc-item-dots {
-  flex:1; border-bottom:1px dotted rgba(139,90,30,.3);
-  margin: 0 8px; position:relative; top:-3px;
-}
-.toc-item-page {
-  font-family:'Cinzel', serif; font-size:9px;
-  color:#8a6520; letter-spacing:1px;
-}
-.toc-locked {
-  opacity:.38; font-style:italic;
-}
+.toc-item-num  { font-family:'Cinzel', serif; font-size:9px; color:#b5892a; letter-spacing:2px; margin-right:10px; flex-shrink:0; }
+.toc-item-dots { flex:1; border-bottom:1px dotted rgba(139,90,30,.3); margin:0 8px; position:relative; top:-3px; }
+.toc-item-page { font-family:'Cinzel', serif; font-size:9px; color:#8a6520; letter-spacing:1px; }
+.toc-locked    { opacity:.38; font-style:italic; }
 
-/* ── page body ── */
 .page-body { flex:1; padding-top:14px; overflow:hidden; }
 .placeholder-text {
   font-family:'IM Fell English', serif; font-style:italic;
   font-size:13px; color:#6b4c1e; opacity:.4; text-align:center;
   margin-top:40px; letter-spacing:1px; line-height:2;
 }
+
+/* ── DEMOGRAPHIC GATE (Level 0 overlay on Dreams page) ── */
+.demo-gate {
+  position:absolute; inset:0; z-index:50;
+  background:rgba(242,228,192,.93);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:18px; padding:36px;
+}
+.gate-seal {
+  font-size:32px; color:#b5892a; opacity:.7;
+}
+.gate-title {
+  font-family:'Cinzel', serif; font-size:13px; font-weight:700;
+  color:#2a1606; letter-spacing:5px; text-align:center;
+}
+.gate-text {
+  font-family:'IM Fell English', serif; font-style:italic;
+  font-size:13px; color:#5a3a10; text-align:center; line-height:1.8;
+  max-width:280px;
+}
+.gate-rule { width:180px; height:1px; background:linear-gradient(90deg,transparent,#b5892a,transparent); }
+.gate-btn {
+  font-family:'Cinzel', serif; font-size:9px; letter-spacing:3px; color:#d4a843;
+  background:linear-gradient(135deg,#2a1400,#3a1e00);
+  border:1px solid #8a6520; border-radius:3px;
+  padding:10px 22px; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,200,80,.1);
+  transition:background .2s, box-shadow .2s;
+}
+.gate-btn:hover { background:linear-gradient(135deg,#3a1e00,#4a2800); box-shadow:0 2px 12px rgba(181,137,42,.3), inset 0 1px 0 rgba(255,200,80,.15); }
+
+/* ── END OF DREAM BUTTON ── */
+.eod-btn-wrap {
+  position:absolute; bottom:48px; left:50%; transform:translateX(-50%);
+  z-index:20;
+}
+.eod-btn {
+  font-family:'Cinzel', serif; font-size:8px; letter-spacing:3px; color:#8a6520;
+  background:linear-gradient(135deg,#f2e4c0,#e8d4a8);
+  border:1px solid #b5892a; border-radius:2px;
+  padding:7px 16px; cursor:pointer;
+  box-shadow:0 1px 6px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,220,120,.3);
+  transition:all .2s;
+  white-space:nowrap;
+}
+.eod-btn:hover { background:linear-gradient(135deg,#e8d4a8,#d8c090); color:#b5892a; box-shadow:0 2px 10px rgba(181,137,42,.25); }
+
+/* ══════════════════════════════════════
+   EMOTION PANEL (right overlay)
+══════════════════════════════════════ */
+.emotion-panel {
+  position:absolute; inset:0; z-index:200;
+  background:#f2e4c0;
+  background-image: radial-gradient(ellipse at 20% 15%, rgba(255,248,220,.7) 0%, transparent 55%);
+  display:flex; flex-direction:column;
+  border-radius:0 2px 2px 0;
+  transform:translateX(105%);
+  transition:transform .4s cubic-bezier(.4,0,.2,1);
+  box-shadow:inset 10px 0 30px rgba(80,40,0,.18);
+}
+.emotion-panel.open { transform:translateX(0); }
+.emotion-panel::before { content:''; position:absolute; inset:20px; border:1px solid rgba(120,80,20,.2); pointer-events:none; z-index:1; }
+
+.emotion-panel-inner {
+  position:relative; z-index:2;
+  height:100%; padding:28px 32px 28px 28px;
+  display:flex; flex-direction:column; gap:10px;
+}
+
+.emotion-heading {
+  font-family:'Cinzel', serif; font-size:11px; font-weight:700;
+  color:#2a1606; letter-spacing:5px; text-align:center; margin-bottom:4px;
+}
+.emotion-sub {
+  font-family:'IM Fell English', serif; font-style:italic;
+  font-size:11px; color:#6b4c1e; text-align:center; line-height:1.6; margin-bottom:2px;
+}
+.emotion-rule {
+  width:100%; height:1px; margin-bottom:6px;
+  background:linear-gradient(90deg, transparent, #b5892a 25%, #d4a843 50%, #b5892a 75%, transparent);
+}
+
+.gem-list { flex:1; display:flex; flex-direction:column; justify-content:center; gap:0; }
+
+.gem-row {
+  display:flex; align-items:center; gap:14px;
+  padding:5px 8px; border-radius:3px;
+  cursor:pointer;
+  transition:background .15s;
+  position:relative;
+}
+.gem-row:hover { background:rgba(181,137,42,.1); }
+.gem-row.selected { background:rgba(181,137,42,.18); }
+.gem-row.selected::before {
+  content:'✦'; position:absolute; right:8px;
+  color:#b5892a; font-size:9px;
+}
+
+.gem {
+  width:32px; height:32px; border-radius:50%; flex-shrink:0;
+  border:2px solid #8a6520;
+  box-shadow:0 0 0 1px #3a2008, 0 2px 6px rgba(0,0,0,.4);
+  position:relative; overflow:hidden;
+}
+.gem-inner {
+  position:absolute; inset:0; border-radius:50%;
+}
+/* gem colors */
+.gem-love    .gem-inner { background:radial-gradient(circle at 35% 30%, #e080ff, #7a10c0, #3a0060); }
+.gem-erotic  .gem-inner { background:radial-gradient(circle at 35% 30%, #60ff60, #10a010, #005000); }
+.gem-excite  .gem-inner { background:radial-gradient(circle at 35% 30%, #ffff60, #d4a800, #806000); }
+.gem-heroic  .gem-inner {
+  background:radial-gradient(circle at 50% 50%, #fff, #ffd700, #ff8c00, #c00020, #7b00c8);
+}
+.gem-heroic  .gem-inner::after {
+  content:''; position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(circle at 50% 30%, rgba(255,255,255,.7) 0%, transparent 60%);
+}
+.gem-fearful .gem-inner { background:radial-gradient(circle at 35% 30%, #ff4040, #a00000, #500000); }
+.gem-anxiety .gem-inner { background:radial-gradient(circle at 35% 30%, #ffb040, #c06000, #603000); }
+.gem-depress .gem-inner { background:radial-gradient(circle at 35% 30%, #4080ff, #0030b0, #001060); }
+.gem-awe     .gem-inner {
+  background: conic-gradient(from 0deg, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff, #ff0000);
+  opacity:.9;
+}
+.gem-nostalg .gem-inner { background:radial-gradient(circle at 35% 30%, #ffa040, #d06800, #804000); }
+.gem-neutral .gem-inner { background:radial-gradient(circle at 35% 30%, #ffffff, #c8c8c8, #888); }
+.gem-repuls  .gem-inner { background:radial-gradient(circle at 35% 30%, #444, #181818, #000); }
+
+.gem-label {
+  font-family:'Cormorant Garamond', serif; font-size:14px;
+  color:#2a1606; letter-spacing:1px;
+}
+.gem-separator { width:100%; height:1px; margin:3px 0; background:linear-gradient(90deg,transparent,#b5892a55,transparent); }
+
+.emotion-confirm-wrap { display:flex; justify-content:center; margin-top:4px; }
+.emotion-confirm {
+  font-family:'Cinzel', serif; font-size:8px; letter-spacing:3px; color:#d4a843;
+  background:linear-gradient(135deg,#2a1400,#3a1e00);
+  border:1px solid #8a6520; border-radius:3px;
+  padding:9px 24px; cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.5);
+  transition:all .2s; opacity:.4;
+}
+.emotion-confirm.ready { opacity:1; }
+.emotion-confirm.ready:hover { background:linear-gradient(135deg,#3a1e00,#4a2800); box-shadow:0 2px 12px rgba(181,137,42,.3); }
+
 </style>
 </head>
 <body>
 
 <!-- ══ STATE 1: COVER ══ -->
-<div id="s-cover" class="state active" onclick="goTo('s-frontispiece')">
+<div id="s-cover" class="state active" onclick="goTo('s-frontispiece'); autoOpenSidebar();">
   <div class="cover-wrap">
     <div class="cover-spine"></div>
     <div class="cover-board">
-      <!-- corner ornaments -->
-      <span class="cover-corner tl">❧</span>
-      <span class="cover-corner tr">❧</span>
-      <span class="cover-corner bl">❧</span>
-      <span class="cover-corner br">❧</span>
-
-      <!-- porthole + rivets -->
-      <div style="position:relative; z-index:2;">
-        <div class="cover-porthole">
-          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
-        </div>
-        <div class="cover-rivet" style="top:-6px; left:50%; transform:translateX(-50%)"></div>
-        <div class="cover-rivet" style="bottom:-6px; left:50%; transform:translateX(-50%)"></div>
-        <div class="cover-rivet" style="left:-6px; top:50%; transform:translateY(-50%)"></div>
-        <div class="cover-rivet" style="right:-6px; top:50%; transform:translateY(-50%)"></div>
-        <div class="cover-rivet" style="top:6px; left:10px;"></div>
-        <div class="cover-rivet" style="top:6px; right:10px;"></div>
-        <div class="cover-rivet" style="bottom:6px; left:10px;"></div>
-        <div class="cover-rivet" style="bottom:6px; right:10px;"></div>
+      <div class="cover-corner tl">❧</div>
+      <div class="cover-corner tr">❧</div>
+      <div class="cover-corner bl">❧</div>
+      <div class="cover-corner br">❧</div>
+      <div class="cover-porthole">
+        <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
       </div>
-
       <div class="cover-title">My Dream<br>Grimoire</div>
       <div class="cover-rule"></div>
-      <div class="cover-byline">Pierrot Lunaire &nbsp;·&nbsp; ADOP &nbsp;·&nbsp; Experiment V</div>
+      <div class="cover-byline">Pierrot Lunaire · ADOP · Experiment V</div>
       <div class="cover-open-hint">— click to open —</div>
     </div>
   </div>
 </div>
 
-<!-- ══ STATE 2: FRONTISPIECE (Avatar + TOC) ══ -->
+<!-- ══ STATE 2: FRONTISPIECE ══ -->
 <div id="s-frontispiece" class="state">
-  <div class="book">
+  <div class="book-outer">
+    <!-- ORB SIDEBAR -->
+    <div class="orb-sidebar hidden" id="orbSidebar">
+      <div class="orb-tab" onclick="toggleSidebar()" title="Navigation">
+        <span class="orb-tab-icon">⚙</span>
+      </div>
 
-    <!-- LEFT: Avatar -->
-    <div class="page left">
-      <div class="page-inner">
-        <div class="avatar-wrap">
-          <div style="position:relative;">
-            <div class="porthole-lg">
+      <div class="orb-item locked" id="orb-dreams" onclick="orbClick('dreams')">
+        <div class="orb-circle">
+          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Dreams" style="filter:grayscale(.4) brightness(.7)">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Dreams</div>
+      </div>
+
+      <div class="orb-item locked" id="orb-commentaries" onclick="orbClick('commentaries')">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#ffd060,#c08000,#3a2000);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Commentaries</div>
+      </div>
+
+      <div class="orb-item locked" id="orb-images">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#8090c0,#304080,#101830);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Images</div>
+      </div>
+
+      <div class="orb-item locked" id="orb-tree">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#60c080,#1a6030,#082010);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Dream Tree</div>
+      </div>
+
+      <div class="orb-item locked" id="orb-nereid">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#80c0d0,#207080,#082030);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Nereid</div>
+      </div>
+
+      <div class="orb-separator"></div>
+
+      <div class="orb-item locked" id="orb-search">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#a0a0b0,#404050,#101018); opacity:.4;">
+          <div class="orb-locked-overlay" style="color:#303040;">◉</div>
+        </div>
+        <div class="orb-label-tab" style="opacity:.3;">Search</div>
+      </div>
+    </div>
+
+    <div class="book sidebar-open" id="mainBook">
+      <!-- LEFT: Avatar -->
+      <div class="page left">
+        <div class="page-inner">
+          <div class="avatar-wrap">
+            <div class="porthole-lg" style="position:relative;">
               <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
+              <div class="rivet-lg" style="top:-3px;left:50%;transform:translateX(-50%)"></div>
+              <div class="rivet-lg" style="bottom:-3px;left:50%;transform:translateX(-50%)"></div>
+              <div class="rivet-lg" style="left:-3px;top:50%;transform:translateY(-50%)"></div>
+              <div class="rivet-lg" style="right:-3px;top:50%;transform:translateY(-50%)"></div>
             </div>
-            <div class="rivet-lg" style="top:-7px; left:50%; transform:translateX(-50%)"></div>
-            <div class="rivet-lg" style="bottom:-7px; left:50%; transform:translateX(-50%)"></div>
-            <div class="rivet-lg" style="left:-7px; top:50%; transform:translateY(-50%)"></div>
-            <div class="rivet-lg" style="right:-7px; top:50%; transform:translateY(-50%)"></div>
-            <div class="rivet-lg" style="top:9px; left:12px;"></div>
-            <div class="rivet-lg" style="top:9px; right:12px;"></div>
-            <div class="rivet-lg" style="bottom:9px; left:12px;"></div>
-            <div class="rivet-lg" style="bottom:9px; right:12px;"></div>
+            <div class="avatar-name-lg">PIERROT</div>
+            <div class="avatar-rule-lg"></div>
+            <div class="avatar-sub-lg">Pierrot Lunaire · Dreamer</div>
           </div>
-          <div class="avatar-name-lg">PIERROT</div>
-          <div class="avatar-rule-lg"></div>
-          <div class="avatar-sub-lg">Pierrot Lunaire · Dreamer</div>
         </div>
+        <div class="page-num left">i</div>
       </div>
-      <div class="page-num left">i</div>
-    </div>
 
-    <div class="spine-seam"></div>
+      <div class="spine-seam"></div>
 
-    <!-- RIGHT: Table of Contents -->
-    <div class="page right">
-      <div class="page-inner">
-        <div class="page-heading">Table of Contents</div>
-        <div class="heading-rule double"></div>
-        <div class="heading-rule" style="margin-bottom:0;"></div>
-        <div class="toc-body">
-
-          <div class="toc-item">
-            <span class="toc-item-num">I</span>
-            Dreams
-            <span class="toc-item-dots"></span>
-            <span class="toc-item-page">1</span>
+      <!-- RIGHT: TOC -->
+      <div class="page right">
+        <div class="page-inner">
+          <div class="page-heading">Table of Contents</div>
+          <div class="heading-rule double"></div>
+          <div class="heading-rule"></div>
+          <div class="toc-body">
+            <div class="toc-item">
+              <span class="toc-item-num">I</span>How the World Sees Me
+              <span class="toc-item-dots"></span><span class="toc-item-page">1</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-item-num">II</span>How I See Myself
+              <span class="toc-item-dots"></span><span class="toc-item-page">2</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-item-num">III</span>Dreams
+              <span class="toc-item-dots"></span><span class="toc-item-page">3</span>
+            </div>
+            <div class="toc-item">
+              <span class="toc-item-num">IV</span>Commentaries
+              <span class="toc-item-dots"></span><span class="toc-item-page">4</span>
+            </div>
+            <div class="toc-item toc-locked">
+              <span class="toc-item-num">V</span>Images
+              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
+            </div>
+            <div class="toc-item toc-locked">
+              <span class="toc-item-num">VI</span>Dream Tree
+              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
+            </div>
+            <div class="toc-item toc-locked">
+              <span class="toc-item-num">VII</span>Nereid
+              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
+            </div>
+            <div class="toc-item toc-locked">
+              <span class="toc-item-num">VIII</span>Search
+              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
+            </div>
           </div>
-          <div class="toc-item">
-            <span class="toc-item-num">II</span>
-            Commentaries
-            <span class="toc-item-dots"></span>
-            <span class="toc-item-page">2</span>
-          </div>
-          <div class="toc-item toc-locked">
-            <span class="toc-item-num">III</span>
-            Images
-            <span class="toc-item-dots"></span>
-            <span class="toc-item-page">—</span>
-          </div>
-          <div class="toc-item toc-locked">
-            <span class="toc-item-num">IV</span>
-            Dream Tree
-            <span class="toc-item-dots"></span>
-            <span class="toc-item-page">—</span>
-          </div>
-          <div class="toc-item toc-locked">
-            <span class="toc-item-num">V</span>
-            Nereid
-            <span class="toc-item-dots"></span>
-            <span class="toc-item-page">—</span>
-          </div>
-          <div class="toc-item toc-locked">
-            <span class="toc-item-num">VI</span>
-            Search
-            <span class="toc-item-dots"></span>
-            <span class="toc-item-page">—</span>
-          </div>
-
         </div>
+        <div class="turn-arrow right" onclick="goTo('s-open')">turn ›</div>
+        <div class="page-num right">ii</div>
       </div>
-      <div class="turn-arrow right" onclick="goTo('s-open')">turn ›</div>
-      <div class="page-num right">ii</div>
     </div>
-
   </div>
 </div>
 
 <!-- ══ STATE 3: DREAMS + COMMENTARIES ══ -->
 <div id="s-open" class="state">
-  <div class="book">
-
-    <!-- LEFT: Dreams -->
-    <div class="page left">
-      <div class="page-inner">
-        <div class="page-heading">Dreams</div>
-        <div class="heading-rule double"></div>
-        <div class="heading-rule"></div>
-        <div class="page-body">
-          <div class="placeholder-text">
-            — dream entries will appear here —
-          </div>
-        </div>
+  <div class="book-outer">
+    <!-- ORB SIDEBAR -->
+    <div class="orb-sidebar" id="orbSidebar2">
+      <div class="orb-tab" onclick="toggleSidebar2()" title="Navigation">
+        <span class="orb-tab-icon">⚙</span>
       </div>
-      <div class="turn-arrow left" onclick="goTo('s-frontispiece')">‹ turn</div>
-      <div class="page-num left">1</div>
+
+      <div class="orb-item" id="orb2-dreams" onclick="orbClick2('dreams')">
+        <div class="orb-circle">
+          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Dreams" style="filter:grayscale(.3)">
+          <div class="orb-locked-overlay" id="lock2-dreams">🔒</div>
+        </div>
+        <div class="orb-label-tab">Dreams</div>
+      </div>
+
+      <div class="orb-item" id="orb2-commentaries" onclick="orbClick2('commentaries')">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#ffd060,#c08000,#3a2000);">
+          <div class="orb-locked-overlay" id="lock2-commentaries">🔒</div>
+        </div>
+        <div class="orb-label-tab">Commentaries</div>
+      </div>
+
+      <div class="orb-item locked">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#8090c0,#304080,#101830);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Images</div>
+      </div>
+
+      <div class="orb-item locked">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#60c080,#1a6030,#082010);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Dream Tree</div>
+      </div>
+
+      <div class="orb-item locked">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#80c0d0,#207080,#082030);">
+          <div class="orb-locked-overlay">🔒</div>
+        </div>
+        <div class="orb-label-tab">Nereid</div>
+      </div>
+
+      <div class="orb-separator"></div>
+
+      <div class="orb-item locked">
+        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#a0a0b0,#404050,#101018); opacity:.4;">
+          <div class="orb-locked-overlay" style="color:#303040;">◉</div>
+        </div>
+        <div class="orb-label-tab" style="opacity:.3;">Search</div>
+      </div>
     </div>
 
-    <div class="spine-seam"></div>
+    <div class="book sidebar-open" id="mainBook2">
 
-    <!-- RIGHT: Commentaries -->
-    <div class="page right">
-      <div class="page-inner">
-        <div class="page-heading">Commentaries</div>
-        <div class="heading-rule double"></div>
-        <div class="heading-rule"></div>
-        <div class="page-body">
-          <div class="placeholder-text">
-            — commentaries will appear here —
+      <!-- LEFT: Dreams -->
+      <div class="page left" style="position:relative;">
+        <div class="page-inner">
+          <div class="page-heading">Dreams</div>
+          <div class="heading-rule double"></div>
+          <div class="heading-rule"></div>
+          <div class="page-body">
+            <div class="placeholder-text">— dream entries will appear here —</div>
           </div>
         </div>
-      </div>
-      <div class="page-num right">2</div>
-    </div>
 
+        <!-- DEMOGRAPHIC GATE OVERLAY -->
+        <div class="demo-gate" id="demoGate">
+          <div class="gate-seal">⚜</div>
+          <div class="gate-title">Before You Begin</div>
+          <div class="gate-rule"></div>
+          <div class="gate-text">
+            To unlock your Grimoire, complete two brief passages:<br><br>
+            <em>How the World Sees Me</em><br>and<br>
+            <em>How I See Myself</em>
+          </div>
+          <div class="gate-rule"></div>
+          <button class="gate-btn" onclick="completeDemographic()">Begin the Passages →</button>
+        </div>
+
+        <div class="eod-btn-wrap" id="eodBtnWrap" style="display:none;">
+          <button class="eod-btn" onclick="openEmotionPanel()">⚜ End of Dream · Record Tone</button>
+        </div>
+
+        <div class="turn-arrow left" onclick="goTo('s-frontispiece')">‹ turn</div>
+        <div class="page-num left">1</div>
+      </div>
+
+      <div class="spine-seam"></div>
+
+      <!-- RIGHT: Commentaries + Emotion Panel -->
+      <div class="page right" style="position:relative; overflow:hidden;">
+        <div class="page-inner">
+          <div class="page-heading">Commentaries</div>
+          <div class="heading-rule double"></div>
+          <div class="heading-rule"></div>
+          <div class="page-body">
+            <div class="placeholder-text">— commentaries will appear here —</div>
+          </div>
+        </div>
+
+        <!-- EMOTION PANEL sweeps over right page -->
+        <div class="emotion-panel" id="emotionPanel">
+          <div class="emotion-panel-inner">
+            <div class="emotion-heading">Emotional Tone</div>
+            <div class="emotion-sub">Select all that apply.<br>This dream will not close until a tone is recorded.</div>
+            <div class="emotion-rule"></div>
+
+            <div class="gem-list">
+              <div class="gem-row" onclick="toggleGem(this,'Love')">
+                <div class="gem gem-love"><div class="gem-inner"></div></div>
+                <span class="gem-label">Love</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Erotic')">
+                <div class="gem gem-erotic"><div class="gem-inner"></div></div>
+                <span class="gem-label">Erotic</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Excitement')">
+                <div class="gem gem-excite"><div class="gem-inner"></div></div>
+                <span class="gem-label">Excitement</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Heroic / Triumphant')">
+                <div class="gem gem-heroic"><div class="gem-inner"></div></div>
+                <span class="gem-label">Heroic / Triumphant</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Fearful')">
+                <div class="gem gem-fearful"><div class="gem-inner"></div></div>
+                <span class="gem-label">Fearful</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Anxiety')">
+                <div class="gem gem-anxiety"><div class="gem-inner"></div></div>
+                <span class="gem-label">Anxiety</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Depression')">
+                <div class="gem gem-depress"><div class="gem-inner"></div></div>
+                <span class="gem-label">Depression</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Awe')">
+                <div class="gem gem-awe"><div class="gem-inner"></div></div>
+                <span class="gem-label">Awe</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Nostalgia')">
+                <div class="gem gem-nostalg"><div class="gem-inner"></div></div>
+                <span class="gem-label">Nostalgia</span>
+              </div>
+              <div class="gem-separator"></div>
+              <div class="gem-row" onclick="toggleGem(this,'Neutral')">
+                <div class="gem gem-neutral"><div class="gem-inner"></div></div>
+                <span class="gem-label">Neutral</span>
+              </div>
+              <div class="gem-row" onclick="toggleGem(this,'Repulsive')">
+                <div class="gem gem-repuls"><div class="gem-inner"></div></div>
+                <span class="gem-label">Repulsive</span>
+              </div>
+            </div>
+
+            <div class="emotion-confirm-wrap">
+              <button class="emotion-confirm" id="emotionConfirm" onclick="confirmEmotions()">
+                ✦ &nbsp; Confirm Selection &nbsp; ✦
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="page-num right">2</div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
+var gameLevel = 0;        // 0 = locked, 1 = demographic done
+var selectedEmotions = [];
+var sidebarOpen1 = false;
+var sidebarOpen2 = true;
+
 function goTo(id) {
   var states = document.querySelectorAll('.state');
-  for (var i = 0; i < states.length; i++) {
-    states[i].classList.remove('active');
-  }
+  for (var i = 0; i < states.length; i++) states[i].classList.remove('active');
   document.getElementById(id).classList.add('active');
+}
+
+function autoOpenSidebar() {
+  // Called on first open from cover
+  setTimeout(function() {
+    var sb = document.getElementById('orbSidebar');
+    if (sb) { sb.classList.remove('hidden'); sidebarOpen1 = true; }
+  }, 400);
+}
+
+function toggleSidebar() {
+  var sb = document.getElementById('orbSidebar');
+  var bk = document.getElementById('mainBook');
+  sidebarOpen1 = !sidebarOpen1;
+  if (sidebarOpen1) { sb.classList.remove('hidden'); bk.classList.add('sidebar-open'); }
+  else { sb.classList.add('hidden'); bk.classList.remove('sidebar-open'); }
+}
+
+function toggleSidebar2() {
+  var sb = document.getElementById('orbSidebar2');
+  var bk = document.getElementById('mainBook2');
+  sidebarOpen2 = !sidebarOpen2;
+  if (sidebarOpen2) { sb.classList.remove('hidden'); bk.classList.add('sidebar-open'); }
+  else { sb.classList.add('hidden'); bk.classList.remove('sidebar-open'); }
+}
+
+function orbClick(name) {
+  if (gameLevel < 1) { alert('Complete "How the World Sees Me" and "How I See Myself" to unlock your Grimoire.'); }
+}
+function orbClick2(name) {
+  if (gameLevel < 1) { alert('Complete the two Passages first to unlock Dreams and Commentaries.'); }
+}
+
+// Demo: simulate completing demographic
+function completeDemographic() {
+  gameLevel = 1;
+  // Remove gate
+  var gate = document.getElementById('demoGate');
+  if (gate) gate.style.display = 'none';
+  // Show End of Dream button
+  var eod = document.getElementById('eodBtnWrap');
+  if (eod) eod.style.display = 'block';
+  // Unlock orbs
+  unlockOrb('orb-dreams');
+  unlockOrb('orb-commentaries');
+  unlockOrb('orb2-dreams', 'lock2-dreams');
+  unlockOrb('orb2-commentaries', 'lock2-commentaries');
+}
+
+function unlockOrb(orbId, lockId) {
+  var orb = document.getElementById(orbId);
+  if (orb) { orb.classList.remove('locked'); orb.style.cursor = 'pointer'; }
+  if (lockId) {
+    var lock = document.getElementById(lockId);
+    if (lock) lock.style.display = 'none';
+  }
+}
+
+// ── EMOTION PANEL ──
+function openEmotionPanel() {
+  selectedEmotions = [];
+  // unselect all rows
+  var rows = document.querySelectorAll('.gem-row');
+  for (var i = 0; i < rows.length; i++) rows[i].classList.remove('selected');
+  document.getElementById('emotionConfirm').classList.remove('ready');
+  document.getElementById('emotionPanel').classList.add('open');
+}
+
+function toggleGem(row, label) {
+  var idx = selectedEmotions.indexOf(label);
+  if (idx === -1) {
+    selectedEmotions.push(label);
+    row.classList.add('selected');
+  } else {
+    selectedEmotions.splice(idx, 1);
+    row.classList.remove('selected');
+  }
+  var btn = document.getElementById('emotionConfirm');
+  if (selectedEmotions.length > 0) btn.classList.add('ready');
+  else btn.classList.remove('ready');
+}
+
+function confirmEmotions() {
+  if (selectedEmotions.length === 0) return;
+  // Log to console (backend write goes here in Phase B)
+  console.log('Emotional tones logged:', selectedEmotions);
+  // Close panel
+  document.getElementById('emotionPanel').classList.remove('open');
+  selectedEmotions = [];
 }
 </script>
 
