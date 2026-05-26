@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dream Grimoire</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  width:100%; height:100%;
+  background: radial-gradient(ellipse at center, #120800 0%, #060300 100%);
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  font-family:'Cormorant Garamond', Georgia, serif;
+}
+
+/* ─── STATES ─── */
+.state { display:none; width:100%; height:100%; align-items:center; justify-content:center; }
+.state.active { display:flex; }
+
+/* ══════════════════════════════════════
+   STATE 1 — COVER
+══════════════════════════════════════ */
+#s-cover {
+  cursor:pointer;
+}
+.cover-wrap {
+  display:flex;
+  filter: drop-shadow(-16px 12px 48px rgba(0,0,0,.9)) drop-shadow(0 0 60px rgba(90,50,0,.3));
+  transition: transform .15s ease;
+}
+.cover-wrap:hover { transform: scale(1.012); }
+
+.cover-spine {
+  width:32px;
+  background: linear-gradient(90deg, #080400, #1e0e00, #120900, #1e0e00, #080400);
+  border-top: 2px solid #4a3008;
+  border-bottom: 2px solid #4a3008;
+  border-left: 2px solid #2a1a04;
+  position:relative;
+  border-radius: 3px 0 0 3px;
+}
+.cover-spine::before {
+  content:'';
+  position:absolute; left:50%; top:8%; bottom:8%; width:1px;
+  background: linear-gradient(180deg, transparent, #b5892a55, #d4a84388, #b5892a55, transparent);
+  transform:translateX(-50%);
+}
+
+.cover-board {
+  width:400px; height:560px;
+  background:
+    linear-gradient(135deg, #1e0d02 0%, #2a1500 20%, #1a0b02 50%, #221200 75%, #140900 100%);
+  border: 3px solid #8a6520;
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  position:relative;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
+  overflow:hidden;
+}
+
+/* outer filigree border */
+.cover-board::before {
+  content:'';
+  position:absolute; inset:14px;
+  border: 1px solid rgba(181,137,42,.4);
+  border-radius:2px;
+  pointer-events:none;
+}
+/* inner filigree border */
+.cover-board::after {
+  content:'';
+  position:absolute; inset:18px;
+  border: 1px solid rgba(181,137,42,.15);
+  border-radius:2px;
+  pointer-events:none;
+}
+
+.cover-corner {
+  position:absolute; width:36px; height:36px;
+  color:#b5892a; font-size:22px; opacity:.7; pointer-events:none;
+  line-height:1;
+}
+.cover-corner.tl { top:22px; left:22px; }
+.cover-corner.tr { top:22px; right:22px; transform:scaleX(-1); }
+.cover-corner.bl { bottom:22px; left:22px; transform:scaleY(-1); }
+.cover-corner.br { bottom:22px; right:22px; transform:scale(-1); }
+
+.cover-porthole {
+  width:148px; height:148px;
+  border-radius:50%;
+  border: 5px solid #b5892a;
+  box-shadow:
+    0 0 0 2px #5a3a0a,
+    0 0 0 8px #0e0700,
+    0 0 0 10px #7a5418,
+    0 0 0 12px #0e0700,
+    0 0 40px rgba(181,137,42,.25);
+  overflow:hidden;
+  pointer-events:none;
+  position:relative; z-index:2;
+}
+.cover-porthole img { width:100%; height:100%; object-fit:cover; }
+
+/* rivet dots around porthole */
+.cover-rivet {
+  position:absolute; width:10px; height:10px; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #e0b84a, #7a5010);
+  border:1px solid #3a2008;
+  box-shadow: 0 1px 3px rgba(0,0,0,.6);
+  z-index:3;
+}
+
+.cover-title {
+  font-family:'Cinzel', serif;
+  font-size:26px; font-weight:700;
+  color:#d4a843;
+  letter-spacing:4px;
+  text-align:center;
+  line-height:1.5;
+  text-shadow: 0 0 40px rgba(212,168,67,.35), 0 2px 4px rgba(0,0,0,.8);
+  pointer-events:none; position:relative; z-index:2;
+}
+
+.cover-rule {
+  width:220px; height:1px;
+  background: linear-gradient(90deg, transparent, #b5892a 20%, #d4a843 50%, #b5892a 80%, transparent);
+  position:relative; z-index:2; pointer-events:none;
+}
+.cover-rule::before, .cover-rule::after {
+  content:'◆';
+  position:absolute; top:50%; transform:translateY(-50%);
+  color:#b5892a; font-size:7px; background:transparent;
+}
+.cover-rule::before { left:30px; }
+.cover-rule::after  { right:30px; }
+
+.cover-byline {
+  font-family:'IM Fell English', serif;
+  font-style:italic;
+  font-size:11px; color:#9a7530; letter-spacing:3px;
+  pointer-events:none; position:relative; z-index:2;
+  text-align:center;
+}
+
+.cover-open-hint {
+  position:absolute; bottom:28px;
+  font-family:'Cinzel', serif;
+  font-size:9px; color:#7a5820; letter-spacing:4px;
+  opacity:.55; pointer-events:none; z-index:2;
+}
+
+/* ══════════════════════════════════════
+   SHARED BOOK LAYOUT (states 2 & 3)
+══════════════════════════════════════ */
+.book {
+  display:flex;
+  width:860px; height:580px;
+  box-shadow:
+    -8px 8px 40px rgba(0,0,0,.9),
+    8px 8px 40px rgba(0,0,0,.9),
+    0 0 0 1px #2a1800;
+  border-radius:2px;
+}
+
+.page {
+  flex:1;
+  position:relative;
+  overflow:hidden;
+  background: #f2e4c0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 20% 15%, rgba(255,248,220,.7) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 85%, rgba(180,145,90,.2) 0%, transparent 55%);
+}
+.page.left  {
+  border-radius:2px 0 0 2px;
+  box-shadow: inset -10px 0 30px rgba(80,40,0,.18), inset 6px 0 12px rgba(255,235,180,.25);
+}
+.page.right {
+  border-radius:0 2px 2px 0;
+  box-shadow: inset 10px 0 30px rgba(80,40,0,.18), inset -6px 0 12px rgba(255,235,180,.25);
+}
+/* inner margin border */
+.page::before {
+  content:''; position:absolute; inset:20px;
+  border: 1px solid rgba(120,80,20,.2);
+  pointer-events:none; z-index:1;
+}
+
+.spine-seam {
+  width:12px; flex-shrink:0;
+  background: linear-gradient(90deg, #1a0a00, #2e1600, #1a0a00);
+  box-shadow:
+    inset -3px 0 8px rgba(0,0,0,.6),
+    inset  3px 0 8px rgba(0,0,0,.6);
+  position:relative; z-index:10;
+}
+.spine-seam::after {
+  content:''; position:absolute;
+  left:50%; top:0; bottom:0; width:2px;
+  background: linear-gradient(180deg, transparent, #b5892a33, #d4a84355, #b5892a33, transparent);
+  transform:translateX(-50%);
+}
+
+.page-inner {
+  position:relative; z-index:2;
+  height:100%; padding:36px 42px;
+  display:flex; flex-direction:column;
+}
+
+/* ── page headings ── */
+.page-heading {
+  font-family:'Cinzel', serif;
+  font-size:14px; font-weight:700;
+  color:#2a1606; letter-spacing:6px; text-align:center;
+  margin-bottom:10px;
+}
+.heading-rule {
+  width:100%; height:1px; margin-bottom:4px;
+  background: linear-gradient(90deg, transparent, #b5892a 25%, #d4a843 50%, #b5892a 75%, transparent);
+  position:relative;
+}
+.heading-rule.double::before {
+  content:''; position:absolute;
+  left:0; right:0; top:-4px; height:1px;
+  background: linear-gradient(90deg, transparent, #b5892a55 25%, #b5892a88 50%, #b5892a55 75%, transparent);
+}
+
+/* ── page numbers ── */
+.page-num {
+  position:absolute; bottom:22px;
+  font-family:'Cinzel', serif; font-size:9px;
+  color:#7a5820; letter-spacing:3px; opacity:.6;
+}
+.page-num.left  { left:42px; }
+.page-num.right { right:42px; }
+
+/* ── turn arrows ── */
+.turn-arrow {
+  position:absolute; bottom:18px;
+  font-family:'Cinzel', serif; font-size:10px;
+  color:#7a5820; letter-spacing:3px; opacity:.5;
+  cursor:pointer; z-index:20; user-select:none;
+  padding:6px 10px;
+  transition: opacity .2s, color .2s;
+}
+.turn-arrow:hover { opacity:1; color:#b5892a; }
+.turn-arrow.right { right:38px; }
+.turn-arrow.left  { left:38px; }
+
+/* ── avatar (frontispiece left) ── */
+.avatar-wrap {
+  flex:1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:20px;
+}
+.porthole-lg {
+  width:200px; height:200px; border-radius:50%; overflow:hidden;
+  border: 5px solid #b5892a;
+  box-shadow:
+    0 0 0 2px #5a3a0a,
+    0 0 0 10px #1e1000,
+    0 0 0 12px #7a5418,
+    0 0 30px rgba(181,137,42,.3);
+  position:relative;
+}
+.porthole-lg img { width:100%; height:100%; object-fit:cover; }
+.rivet-lg {
+  position:absolute; width:13px; height:13px; border-radius:50%;
+  background: radial-gradient(circle at 35% 30%, #e0b84a, #6a4010);
+  border:1px solid #3a2008; box-shadow:0 1px 3px rgba(0,0,0,.6);
+}
+.avatar-name-lg {
+  font-family:'Cinzel', serif; font-size:20px; font-weight:600;
+  color:#1a0e04; letter-spacing:12px; text-align:center;
+}
+.avatar-sub-lg {
+  font-family:'IM Fell English', serif; font-style:italic;
+  font-size:12px; color:#6b4c1e; letter-spacing:3px; opacity:.75;
+  text-align:center;
+}
+.avatar-rule-lg {
+  width:140px; height:1px;
+  background: linear-gradient(90deg, transparent, #b5892a, transparent);
+  position:relative;
+}
+.avatar-rule-lg::after {
+  content:'◆'; position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  color:#b5892a; font-size:7px; background:#f2e4c0; padding:0 5px;
+}
+
+/* ── TOC ── */
+.toc-body { flex:1; padding-top:14px; }
+.toc-item {
+  display:flex; align-items:baseline;
+  font-family:'Cormorant Garamond', serif; font-size:13px;
+  color:#3a2510; margin-bottom:9px;
+  line-height:1.3;
+}
+.toc-item-num {
+  font-family:'Cinzel', serif; font-size:9px;
+  color:#b5892a; letter-spacing:2px; margin-right:10px; flex-shrink:0;
+}
+.toc-item-dots {
+  flex:1; border-bottom:1px dotted rgba(139,90,30,.3);
+  margin: 0 8px; position:relative; top:-3px;
+}
+.toc-item-page {
+  font-family:'Cinzel', serif; font-size:9px;
+  color:#8a6520; letter-spacing:1px;
+}
+.toc-locked {
+  opacity:.38; font-style:italic;
+}
+
+/* ── page body ── */
+.page-body { flex:1; padding-top:14px; overflow:hidden; }
+.placeholder-text {
+  font-family:'IM Fell English', serif; font-style:italic;
+  font-size:13px; color:#6b4c1e; opacity:.4; text-align:center;
+  margin-top:40px; letter-spacing:1px; line-height:2;
+}
+</style>
+</head>
+<body>
+
+<!-- ══ STATE 1: COVER ══ -->
+<div id="s-cover" class="state active" onclick="goTo('s-frontispiece')">
+  <div class="cover-wrap">
+    <div class="cover-spine"></div>
+    <div class="cover-board">
+      <!-- corner ornaments -->
+      <span class="cover-corner tl">❧</span>
+      <span class="cover-corner tr">❧</span>
+      <span class="cover-corner bl">❧</span>
+      <span class="cover-corner br">❧</span>
+
+      <!-- porthole + rivets -->
+      <div style="position:relative; z-index:2;">
+        <div class="cover-porthole">
+          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
+        </div>
+        <div class="cover-rivet" style="top:-6px; left:50%; transform:translateX(-50%)"></div>
+        <div class="cover-rivet" style="bottom:-6px; left:50%; transform:translateX(-50%)"></div>
+        <div class="cover-rivet" style="left:-6px; top:50%; transform:translateY(-50%)"></div>
+        <div class="cover-rivet" style="right:-6px; top:50%; transform:translateY(-50%)"></div>
+        <div class="cover-rivet" style="top:6px; left:10px;"></div>
+        <div class="cover-rivet" style="top:6px; right:10px;"></div>
+        <div class="cover-rivet" style="bottom:6px; left:10px;"></div>
+        <div class="cover-rivet" style="bottom:6px; right:10px;"></div>
+      </div>
+
+      <div class="cover-title">My Dream<br>Grimoire</div>
+      <div class="cover-rule"></div>
+      <div class="cover-byline">Pierrot Lunaire &nbsp;·&nbsp; ADOP &nbsp;·&nbsp; Experiment V</div>
+      <div class="cover-open-hint">— click to open —</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ STATE 2: FRONTISPIECE (Avatar + TOC) ══ -->
+<div id="s-frontispiece" class="state">
+  <div class="book">
+
+    <!-- LEFT: Avatar -->
+    <div class="page left">
+      <div class="page-inner">
+        <div class="avatar-wrap">
+          <div style="position:relative;">
+            <div class="porthole-lg">
+              <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
+            </div>
+            <div class="rivet-lg" style="top:-7px; left:50%; transform:translateX(-50%)"></div>
+            <div class="rivet-lg" style="bottom:-7px; left:50%; transform:translateX(-50%)"></div>
+            <div class="rivet-lg" style="left:-7px; top:50%; transform:translateY(-50%)"></div>
+            <div class="rivet-lg" style="right:-7px; top:50%; transform:translateY(-50%)"></div>
+            <div class="rivet-lg" style="top:9px; left:12px;"></div>
+            <div class="rivet-lg" style="top:9px; right:12px;"></div>
+            <div class="rivet-lg" style="bottom:9px; left:12px;"></div>
+            <div class="rivet-lg" style="bottom:9px; right:12px;"></div>
+          </div>
+          <div class="avatar-name-lg">PIERROT</div>
+          <div class="avatar-rule-lg"></div>
+          <div class="avatar-sub-lg">Pierrot Lunaire · Dreamer</div>
+        </div>
+      </div>
+      <div class="page-num left">i</div>
+    </div>
+
+    <div class="spine-seam"></div>
+
+    <!-- RIGHT: Table of Contents -->
+    <div class="page right">
+      <div class="page-inner">
+        <div class="page-heading">Table of Contents</div>
+        <div class="heading-rule double"></div>
+        <div class="heading-rule" style="margin-bottom:0;"></div>
+        <div class="toc-body">
+
+          <div class="toc-item">
+            <span class="toc-item-num">I</span>
+            Dreams
+            <span class="toc-item-dots"></span>
+            <span class="toc-item-page">1</span>
+          </div>
+          <div class="toc-item">
+            <span class="toc-item-num">II</span>
+            Commentaries
+            <span class="toc-item-dots"></span>
+            <span class="toc-item-page">2</span>
+          </div>
+          <div class="toc-item toc-locked">
+            <span class="toc-item-num">III</span>
+            Images
+            <span class="toc-item-dots"></span>
+            <span class="toc-item-page">—</span>
+          </div>
+          <div class="toc-item toc-locked">
+            <span class="toc-item-num">IV</span>
+            Dream Tree
+            <span class="toc-item-dots"></span>
+            <span class="toc-item-page">—</span>
+          </div>
+          <div class="toc-item toc-locked">
+            <span class="toc-item-num">V</span>
+            Nereid
+            <span class="toc-item-dots"></span>
+            <span class="toc-item-page">—</span>
+          </div>
+          <div class="toc-item toc-locked">
+            <span class="toc-item-num">VI</span>
+            Search
+            <span class="toc-item-dots"></span>
+            <span class="toc-item-page">—</span>
+          </div>
+
+        </div>
+      </div>
+      <div class="turn-arrow right" onclick="goTo('s-open')">turn ›</div>
+      <div class="page-num right">ii</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ STATE 3: DREAMS + COMMENTARIES ══ -->
+<div id="s-open" class="state">
+  <div class="book">
+
+    <!-- LEFT: Dreams -->
+    <div class="page left">
+      <div class="page-inner">
+        <div class="page-heading">Dreams</div>
+        <div class="heading-rule double"></div>
+        <div class="heading-rule"></div>
+        <div class="page-body">
+          <div class="placeholder-text">
+            — dream entries will appear here —
+          </div>
+        </div>
+      </div>
+      <div class="turn-arrow left" onclick="goTo('s-frontispiece')">‹ turn</div>
+      <div class="page-num left">1</div>
+    </div>
+
+    <div class="spine-seam"></div>
+
+    <!-- RIGHT: Commentaries -->
+    <div class="page right">
+      <div class="page-inner">
+        <div class="page-heading">Commentaries</div>
+        <div class="heading-rule double"></div>
+        <div class="heading-rule"></div>
+        <div class="page-body">
+          <div class="placeholder-text">
+            — commentaries will appear here —
+          </div>
+        </div>
+      </div>
+      <div class="page-num right">2</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function goTo(id) {
+  var states = document.querySelectorAll('.state');
+  for (var i = 0; i < states.length; i++) {
+    states[i].classList.remove('active');
+  }
+  document.getElementById(id).classList.add('active');
+}
+</script>
+
+</body>
+</html>
