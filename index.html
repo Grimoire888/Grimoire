@@ -4,855 +4,1301 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Dream Grimoire</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-html, body {
-  width:100%; height:100%;
-  background: radial-gradient(ellipse at center, #120800 0%, #060300 100%);
-  display:flex; align-items:center; justify-content:center;
-  overflow:hidden;
-  font-family:'Cormorant Garamond', Georgia, serif;
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background: radial-gradient(ellipse at center, #1a0d04 0%, #0a0502 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
 }
 
-/* ─── STATES ─── */
-.state { display:none; width:100%; height:100%; align-items:center; justify-content:center; }
-.state.active { display:flex; }
+/* ── STATE VISIBILITY ── */
+.grimoire-state { display:none; align-items:center; justify-content:center; }
+.grimoire-state.active { display:flex; }
 
-/* ══════════════════════════════════════
-   COVER
-══════════════════════════════════════ */
-#s-cover { cursor:pointer; }
-.cover-wrap {
-  display:flex;
-  filter: drop-shadow(-16px 12px 48px rgba(0,0,0,.9)) drop-shadow(0 0 60px rgba(90,50,0,.3));
-  transition: transform .15s ease;
+/* ── COVER ── */
+.cover-book {
+  display:flex; align-items:stretch; cursor:pointer;
+  filter: drop-shadow(-12px 8px 40px rgba(0,0,0,.85));
 }
-.cover-wrap:hover { transform: scale(1.012); }
 .cover-spine {
-  width:32px;
-  background: linear-gradient(90deg, #080400, #1e0e00, #120900, #1e0e00, #080400);
-  border-top:2px solid #4a3008; border-bottom:2px solid #4a3008; border-left:2px solid #2a1a04;
-  position:relative; border-radius:3px 0 0 3px;
+  width:28px;
+  background: linear-gradient(90deg, #0e0700, #2a1500, #1a0d04);
+  border-top:2px solid #5a3a0a; border-bottom:2px solid #5a3a0a; border-left:2px solid #3a2200;
+  position:relative;
 }
-.cover-spine::before {
-  content:''; position:absolute; left:50%; top:8%; bottom:8%; width:1px;
-  background: linear-gradient(180deg, transparent, #b5892a55, #d4a84388, #b5892a55, transparent);
-  transform:translateX(-50%);
+.cover-spine::after {
+  content:''; position:absolute; right:0; top:0; bottom:0; width:3px;
+  background: linear-gradient(180deg, #6a4a10, #b5892a55, #6a4a10);
 }
-.cover-board {
-  width:400px; height:560px;
-  background: linear-gradient(135deg, #1e0d02 0%, #2a1500 20%, #1a0b02 50%, #221200 75%, #140900 100%);
-  border:3px solid #8a6520; border-left:none; border-radius:0 4px 4px 0;
-  position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px;
-  overflow:hidden;
+.cover-front {
+  width:420px; height:600px;
+  background: linear-gradient(160deg, #2a1500 0%, #1a0d04 40%, #221200 70%, #160c03 100%);
+  border:3px solid #b5892a; border-left:none;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;
+  position:relative;
 }
-.cover-board::before { content:''; position:absolute; inset:14px; border:1px solid rgba(181,137,42,.4); border-radius:2px; pointer-events:none; }
-.cover-board::after  { content:''; position:absolute; inset:18px; border:1px solid rgba(181,137,42,.15); border-radius:2px; pointer-events:none; }
-.cover-corner { position:absolute; width:36px; height:36px; color:#b5892a; font-size:22px; opacity:.7; pointer-events:none; line-height:1; }
-.cover-corner.tl { top:22px; left:22px; }
-.cover-corner.tr { top:22px; right:22px; transform:scaleX(-1); }
-.cover-corner.bl { bottom:22px; left:22px; transform:scaleY(-1); }
-.cover-corner.br { bottom:22px; right:22px; transform:scale(-1); }
+.cover-front::before {
+  content:''; position:absolute; inset:12px;
+  border:1px solid rgba(181,137,42,.3); pointer-events:none;
+}
+.gear { position:absolute; color:#b5892a; font-size:20px; opacity:.5; pointer-events:none; }
+.gear.tl{top:24px;left:24px;} .gear.tr{top:24px;right:24px;}
+.gear.bl{bottom:24px;left:24px;} .gear.br{bottom:24px;right:24px;}
 .cover-porthole {
-  width:148px; height:148px; border-radius:50%;
-  border:5px solid #b5892a;
-  box-shadow: 0 0 0 2px #5a3a0a, 0 0 0 8px #0e0700, 0 0 0 10px #7a5418, 0 0 0 12px #0e0700, 0 0 40px rgba(181,137,42,.25);
-  overflow:hidden; pointer-events:none; position:relative; z-index:2;
+  width:160px; height:160px; border-radius:50%; overflow:hidden;
+  border:4px solid #b5892a;
+  box-shadow: 0 0 0 2px #7a5a18, 0 0 0 10px #1a0d04, 0 0 0 12px #6a4a10;
+  pointer-events:none;
 }
 .cover-porthole img { width:100%; height:100%; object-fit:cover; }
 .cover-title {
-  font-family:'Cinzel', serif; font-size:26px; font-weight:700;
-  color:#d4a843; letter-spacing:4px; text-align:center; line-height:1.5;
-  text-shadow:0 0 40px rgba(212,168,67,.35), 0 2px 4px rgba(0,0,0,.8);
-  pointer-events:none; position:relative; z-index:2;
+  font-family:'Cinzel',serif; font-size:28px; font-weight:700;
+  color:#d4a843; letter-spacing:5px; text-align:center; line-height:1.5;
+  text-shadow:0 0 30px rgba(212,168,67,.4); pointer-events:none;
 }
-.cover-rule {
-  width:220px; height:1px;
-  background: linear-gradient(90deg, transparent, #b5892a 20%, #d4a843 50%, #b5892a 80%, transparent);
-  position:relative; z-index:2; pointer-events:none;
-}
-.cover-byline {
-  font-family:'IM Fell English', serif; font-style:italic;
-  font-size:11px; color:#9a7530; letter-spacing:3px;
-  pointer-events:none; position:relative; z-index:2; text-align:center;
-}
-.cover-open-hint {
-  position:absolute; bottom:28px;
-  font-family:'Cinzel', serif; font-size:9px; color:#7a5820; letter-spacing:4px;
-  opacity:.55; pointer-events:none; z-index:2;
+.cover-rule { width:200px; height:1px; background:linear-gradient(90deg,transparent,#b5892a,transparent); pointer-events:none; }
+.cover-sub { font-family:'Cinzel',serif; font-size:10px; color:#b5892a; letter-spacing:5px; opacity:.7; pointer-events:none; }
+.cover-hint {
+  position:absolute; bottom:30px;
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:12px; color:#b5892a; letter-spacing:2px; opacity:.5; pointer-events:none;
 }
 
-/* ══════════════════════════════════════
-   SHARED BOOK LAYOUT
-══════════════════════════════════════ */
-.book-outer {
-  position:relative;
-  display:flex;
-  align-items:stretch;
-}
-
-/* ── ORB SIDEBAR (left) ── */
-.orb-sidebar {
-  position:absolute;
-  left:0; top:0; bottom:0;
-  width:88px;
-  background: linear-gradient(180deg, #1a0a00, #2a1400, #1a0a00);
-  border-right:2px solid #6a4a10;
-  border-top:2px solid #4a3008;
-  border-bottom:2px solid #4a3008;
-  border-radius:4px 0 0 4px;
-  box-shadow: inset -4px 0 12px rgba(0,0,0,.5), 2px 0 16px rgba(0,0,0,.6);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:10px; padding:16px 0;
-  z-index:100;
-  transition: transform .35s cubic-bezier(.4,0,.2,1);
-}
-.orb-sidebar.hidden {
-  transform: translateX(-100%);
-}
-
-/* brass pull tab always visible */
-.orb-tab {
-  position:absolute;
-  right:-22px; top:50%; transform:translateY(-50%);
-  width:22px; height:64px;
-  background: linear-gradient(90deg, #6a4a10, #b5892a, #8a6520);
-  border:1px solid #d4a843;
-  border-left:none;
-  border-radius:0 6px 6px 0;
-  cursor:pointer;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:2px 0 8px rgba(0,0,0,.5);
-  z-index:101;
-  transition: background .2s;
-}
-.orb-tab:hover { background: linear-gradient(90deg, #8a6520, #d4a843, #b5892a); }
-.orb-tab-icon { color:#1a0800; font-size:14px; line-height:1; }
-
-.orb-item {
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-  position:relative; cursor:pointer;
-  transition: transform .15s ease;
-}
-.orb-item:hover .orb-circle { box-shadow: 0 0 0 2px #d4a843, 0 0 20px rgba(212,168,67,.5); }
-.orb-item.locked { cursor:default; pointer-events:none; }
-
-.orb-circle {
-  width:52px; height:52px; border-radius:50%;
-  border:3px solid #8a6520;
-  box-shadow:0 0 0 1px #3a2008, 0 0 8px rgba(0,0,0,.6);
-  overflow:hidden; position:relative;
-  background:#0e0700;
-  transition: box-shadow .2s, border-color .2s;
-}
-.orb-circle img { width:100%; height:100%; object-fit:cover; }
-.orb-locked-overlay {
-  position:absolute; inset:0;
-  background:rgba(0,0,0,.62);
-  display:flex; align-items:center; justify-content:center;
-  font-size:16px; color:#6a4a10;
-}
-.orb-label-tab {
-  background: linear-gradient(90deg, #4a3008, #6a4a14, #4a3008);
-  border:1px solid #8a6520;
-  border-radius:3px;
-  padding:2px 7px;
-  font-family:'Cinzel', serif; font-size:7px; color:#d4a843;
-  letter-spacing:1.5px; white-space:nowrap;
-  box-shadow:0 1px 4px rgba(0,0,0,.5);
-}
-.orb-item.locked .orb-label-tab { color:#5a4010; opacity:.5; }
-
-.orb-separator { width:50px; height:1px; background: linear-gradient(90deg, transparent, #b5892a44, transparent); }
-
-/* ── BOOK ── */
+/* ── SHARED BOOK STRUCTURE ── */
 .book {
-  display:flex;
-  width:860px; height:580px;
-  box-shadow:-8px 8px 40px rgba(0,0,0,.9), 8px 8px 40px rgba(0,0,0,.9), 0 0 0 1px #2a1800;
-  border-radius:2px;
-  margin-left:0;
-  transition: margin-left .35s cubic-bezier(.4,0,.2,1);
+  display:flex; width:940px; min-height:640px;
+  box-shadow: 0 20px 80px rgba(0,0,0,.85), 0 0 0 1px #3a2200;
 }
-.book.sidebar-open { margin-left:66px; }
-
-.page {
-  flex:1; position:relative; overflow:hidden;
-  background:#f2e4c0;
-  background-image:
-    radial-gradient(ellipse at 20% 15%, rgba(255,248,220,.7) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 85%, rgba(180,145,90,.2) 0%, transparent 55%);
-}
-.page.left  { border-radius:2px 0 0 2px; box-shadow:inset -10px 0 30px rgba(80,40,0,.18), inset 6px 0 12px rgba(255,235,180,.25); }
-.page.right { border-radius:0 2px 2px 0;  box-shadow:inset 10px 0 30px rgba(80,40,0,.18), inset -6px 0 12px rgba(255,235,180,.25); }
-.page::before { content:''; position:absolute; inset:20px; border:1px solid rgba(120,80,20,.2); pointer-events:none; z-index:1; }
-
 .spine-seam {
-  width:12px; flex-shrink:0;
-  background: linear-gradient(90deg, #1a0a00, #2e1600, #1a0a00);
-  box-shadow:inset -3px 0 8px rgba(0,0,0,.6), inset 3px 0 8px rgba(0,0,0,.6);
-  position:relative; z-index:10;
+  width:10px; flex-shrink:0;
+  background:linear-gradient(180deg,#1a0a00,#2e1800,#1a0a00);
+  box-shadow:inset -2px 0 6px rgba(0,0,0,.5),inset 2px 0 6px rgba(0,0,0,.5);
+  position:relative; z-index:5;
 }
-.spine-seam::after {
+.spine-seam::before {
   content:''; position:absolute; left:50%; top:0; bottom:0; width:2px;
-  background:linear-gradient(180deg, transparent, #b5892a33, #d4a84355, #b5892a33, transparent);
+  background:linear-gradient(180deg,#b5892a44,#d4a84388,#b5892a44);
   transform:translateX(-50%);
 }
-
-.page-inner {
-  position:relative; z-index:2;
-  height:100%; padding:36px 42px;
-  display:flex; flex-direction:column;
-}
-
-.page-heading {
-  font-family:'Cinzel', serif; font-size:14px; font-weight:700;
-  color:#2a1606; letter-spacing:6px; text-align:center; margin-bottom:10px;
-}
-.heading-rule {
-  width:100%; height:1px; margin-bottom:4px;
-  background:linear-gradient(90deg, transparent, #b5892a 25%, #d4a843 50%, #b5892a 75%, transparent);
-  position:relative;
-}
-.heading-rule.double::before {
-  content:''; position:absolute; left:0; right:0; top:-4px; height:1px;
-  background:linear-gradient(90deg, transparent, #b5892a55 25%, #b5892a88 50%, #b5892a55 75%, transparent);
-}
-
-.page-num {
-  position:absolute; bottom:22px;
-  font-family:'Cinzel', serif; font-size:9px; color:#7a5820; letter-spacing:3px; opacity:.6;
-}
-.page-num.left  { left:42px; }
-.page-num.right { right:42px; }
-
-.turn-arrow {
-  position:absolute; bottom:12px;
-  font-family:'Cinzel', serif; font-size:11px;
-  color:#7a5820; letter-spacing:3px; opacity:.7;
-  cursor:pointer; z-index:9999; user-select:none;
-  padding:14px 20px;
-  transition:opacity .2s, color .2s;
-  pointer-events:all;
-}
-.turn-arrow:hover { opacity:1; color:#b5892a; }
-.turn-arrow.right { right:20px; }
-.turn-arrow.left  { left:20px; }
-
-/* ── AVATAR (frontispiece) ── */
-.avatar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
-.porthole-lg {
-  width:200px; height:200px; border-radius:50%; overflow:hidden;
-  border:5px solid #b5892a;
-  box-shadow:0 0 0 2px #5a3a0a, 0 0 0 10px #1e1000, 0 0 0 12px #7a5418, 0 0 30px rgba(181,137,42,.3);
-}
-.porthole-lg img { width:100%; height:100%; object-fit:cover; }
-.rivet-lg {
-  position:absolute; width:13px; height:13px; border-radius:50%;
-  background:radial-gradient(circle at 35% 30%, #e0b84a, #6a4010);
-  border:1px solid #3a2008; box-shadow:0 1px 3px rgba(0,0,0,.6);
-}
-.avatar-name-lg { font-family:'Cinzel', serif; font-size:20px; font-weight:600; color:#1a0e04; letter-spacing:12px; text-align:center; }
-.avatar-sub-lg  { font-family:'IM Fell English', serif; font-style:italic; font-size:12px; color:#6b4c1e; letter-spacing:3px; opacity:.75; text-align:center; }
-.avatar-rule-lg {
-  width:140px; height:1px;
-  background:linear-gradient(90deg, transparent, #b5892a, transparent);
-  position:relative;
-}
-.avatar-rule-lg::after {
-  content:'◆'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
-  color:#b5892a; font-size:7px; background:#f2e4c0; padding:0 5px;
-}
-
-/* ── TOC ── */
-.toc-body { flex:1; padding-top:14px; }
-.toc-item {
-  display:flex; align-items:baseline;
-  font-family:'Cormorant Garamond', serif; font-size:13px; color:#3a2510;
-  margin-bottom:9px; line-height:1.3;
-}
-.toc-item-num  { font-family:'Cinzel', serif; font-size:9px; color:#b5892a; letter-spacing:2px; margin-right:10px; flex-shrink:0; }
-.toc-item-dots { flex:1; border-bottom:1px dotted rgba(139,90,30,.3); margin:0 8px; position:relative; top:-3px; }
-.toc-item-page { font-family:'Cinzel', serif; font-size:9px; color:#8a6520; letter-spacing:1px; }
-.toc-locked    { opacity:.38; font-style:italic; }
-
-.page-body { flex:1; padding-top:14px; overflow:hidden; }
-.placeholder-text {
-  font-family:'IM Fell English', serif; font-style:italic;
-  font-size:13px; color:#6b4c1e; opacity:.4; text-align:center;
-  margin-top:40px; letter-spacing:1px; line-height:2;
-}
-
-/* ── DEMOGRAPHIC GATE (Level 0 overlay on Dreams page) ── */
-.demo-gate {
-  position:absolute; inset:0; z-index:50;
-  background:rgba(242,228,192,.93);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:18px; padding:36px;
-}
-.gate-seal {
-  font-size:32px; color:#b5892a; opacity:.7;
-}
-.gate-title {
-  font-family:'Cinzel', serif; font-size:13px; font-weight:700;
-  color:#2a1606; letter-spacing:5px; text-align:center;
-}
-.gate-text {
-  font-family:'IM Fell English', serif; font-style:italic;
-  font-size:13px; color:#5a3a10; text-align:center; line-height:1.8;
-  max-width:280px;
-}
-.gate-rule { width:180px; height:1px; background:linear-gradient(90deg,transparent,#b5892a,transparent); }
-.gate-btn {
-  font-family:'Cinzel', serif; font-size:9px; letter-spacing:3px; color:#d4a843;
-  background:linear-gradient(135deg,#2a1400,#3a1e00);
-  border:1px solid #8a6520; border-radius:3px;
-  padding:10px 22px; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,200,80,.1);
-  transition:background .2s, box-shadow .2s;
-}
-.gate-btn:hover { background:linear-gradient(135deg,#3a1e00,#4a2800); box-shadow:0 2px 12px rgba(181,137,42,.3), inset 0 1px 0 rgba(255,200,80,.15); }
-
-/* ── END OF DREAM BUTTON ── */
-.eod-btn-wrap {
-  position:absolute; bottom:48px; left:50%; transform:translateX(-50%);
-  z-index:20;
-}
-.eod-btn {
-  font-family:'Cinzel', serif; font-size:8px; letter-spacing:3px; color:#8a6520;
-  background:linear-gradient(135deg,#f2e4c0,#e8d4a8);
-  border:1px solid #b5892a; border-radius:2px;
-  padding:7px 16px; cursor:pointer;
-  box-shadow:0 1px 6px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,220,120,.3);
-  transition:all .2s;
-  white-space:nowrap;
-}
-.eod-btn:hover { background:linear-gradient(135deg,#e8d4a8,#d8c090); color:#b5892a; box-shadow:0 2px 10px rgba(181,137,42,.25); }
-
-/* ══════════════════════════════════════
-   EMOTION PANEL (right overlay)
-══════════════════════════════════════ */
-.emotion-panel {
-  position:absolute; inset:0; z-index:200;
-  background:#f2e4c0;
-  background-image: radial-gradient(ellipse at 20% 15%, rgba(255,248,220,.7) 0%, transparent 55%);
-  display:flex; flex-direction:column;
-  border-radius:0 2px 2px 0;
-  transform:translateX(105%);
-  transition:transform .4s cubic-bezier(.4,0,.2,1);
-  box-shadow:inset 10px 0 30px rgba(80,40,0,.18);
-}
-.emotion-panel.open { transform:translateX(0); }
-.emotion-panel::before { content:''; position:absolute; inset:20px; border:1px solid rgba(120,80,20,.2); pointer-events:none; z-index:1; }
-
-.emotion-panel-inner {
-  position:relative; z-index:2;
-  height:100%; padding:28px 32px 28px 28px;
-  display:flex; flex-direction:column; gap:10px;
-}
-
-.emotion-heading {
-  font-family:'Cinzel', serif; font-size:11px; font-weight:700;
-  color:#2a1606; letter-spacing:5px; text-align:center; margin-bottom:4px;
-}
-.emotion-sub {
-  font-family:'IM Fell English', serif; font-style:italic;
-  font-size:11px; color:#6b4c1e; text-align:center; line-height:1.6; margin-bottom:2px;
-}
-.emotion-rule {
-  width:100%; height:1px; margin-bottom:6px;
-  background:linear-gradient(90deg, transparent, #b5892a 25%, #d4a843 50%, #b5892a 75%, transparent);
-}
-
-.gem-list { flex:1; display:flex; flex-direction:column; justify-content:center; gap:0; }
-
-.gem-row {
-  display:flex; align-items:center; gap:14px;
-  padding:5px 8px; border-radius:3px;
-  cursor:pointer;
-  transition:background .15s;
-  position:relative;
-}
-.gem-row:hover { background:rgba(181,137,42,.1); }
-.gem-row.selected { background:rgba(181,137,42,.18); }
-.gem-row.selected::before {
-  content:'✦'; position:absolute; right:8px;
-  color:#b5892a; font-size:9px;
-}
-
-.gem {
-  width:32px; height:32px; border-radius:50%; flex-shrink:0;
-  border:2px solid #8a6520;
-  box-shadow:0 0 0 1px #3a2008, 0 2px 6px rgba(0,0,0,.4);
+.page {
+  flex:1; min-height:640px;
+  background:#f4e8ce;
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(255,248,220,.6) 0%, transparent 50%),
+    radial-gradient(ellipse at 85% 80%, rgba(200,170,110,.25) 0%, transparent 50%);
   position:relative; overflow:hidden;
 }
-.gem-inner {
-  position:absolute; inset:0; border-radius:50%;
+.page.left  { box-shadow:inset -8px 0 20px rgba(100,60,0,.15),inset 4px 0 10px rgba(255,240,200,.3); }
+.page.right { box-shadow:inset  8px 0 20px rgba(100,60,0,.15),inset -4px 0 10px rgba(255,240,200,.3); }
+.page::before {
+  content:''; position:absolute; inset:22px;
+  border:1px solid rgba(139,90,30,.2); pointer-events:none; z-index:1;
 }
-/* gem colors */
-.gem-love    .gem-inner { background:radial-gradient(circle at 35% 30%, #e080ff, #7a10c0, #3a0060); }
-.gem-erotic  .gem-inner { background:radial-gradient(circle at 35% 30%, #60ff60, #10a010, #005000); }
-.gem-excite  .gem-inner { background:radial-gradient(circle at 35% 30%, #ffff60, #d4a800, #806000); }
-.gem-heroic  .gem-inner {
-  background:radial-gradient(circle at 50% 50%, #fff, #ffd700, #ff8c00, #c00020, #7b00c8);
+.page-inner {
+  position:relative; z-index:2; height:100%;
+  padding:44px 48px; display:flex; flex-direction:column;
 }
-.gem-heroic  .gem-inner::after {
-  content:''; position:absolute; inset:0; border-radius:50%;
-  background:radial-gradient(circle at 50% 30%, rgba(255,255,255,.7) 0%, transparent 60%);
+.page-num {
+  position:absolute; bottom:28px;
+  font-family:'Cinzel',serif; font-size:9px; color:#8a6520; letter-spacing:2px; opacity:.6;
+  z-index:10;
 }
-.gem-fearful .gem-inner { background:radial-gradient(circle at 35% 30%, #ff4040, #a00000, #500000); }
-.gem-anxiety .gem-inner { background:radial-gradient(circle at 35% 30%, #ffb040, #c06000, #603000); }
-.gem-depress .gem-inner { background:radial-gradient(circle at 35% 30%, #4080ff, #0030b0, #001060); }
-.gem-awe     .gem-inner {
-  background: conic-gradient(from 0deg, #ff0000, #ff8000, #ffff00, #00ff00, #0000ff, #8000ff, #ff0000);
-  opacity:.9;
-}
-.gem-nostalg .gem-inner { background:radial-gradient(circle at 35% 30%, #ffa040, #d06800, #804000); }
-.gem-neutral .gem-inner { background:radial-gradient(circle at 35% 30%, #ffffff, #c8c8c8, #888); }
-.gem-repuls  .gem-inner { background:radial-gradient(circle at 35% 30%, #444, #181818, #000); }
+.page-num.left { left:48px; }
+.page-num.right { right:48px; }
 
-.gem-label {
-  font-family:'Cormorant Garamond', serif; font-size:14px;
-  color:#2a1606; letter-spacing:1px;
+/* ── PAGE NAV ARROWS ── */
+.turn-next {
+  position:absolute; right:0; top:50%; transform:translateY(-50%);
+  font-family:'Cinzel',serif; font-size:22px; color:#8a6520;
+  opacity:.4; cursor:pointer; transition:opacity .2s, color .2s;
+  z-index:10; user-select:none; padding:20px 12px;
 }
-.gem-separator { width:100%; height:1px; margin:3px 0; background:linear-gradient(90deg,transparent,#b5892a55,transparent); }
-
-.emotion-confirm-wrap { display:flex; justify-content:center; margin-top:4px; }
-.emotion-confirm {
-  font-family:'Cinzel', serif; font-size:8px; letter-spacing:3px; color:#d4a843;
-  background:linear-gradient(135deg,#2a1400,#3a1e00);
-  border:1px solid #8a6520; border-radius:3px;
-  padding:9px 24px; cursor:pointer;
-  box-shadow:0 2px 8px rgba(0,0,0,.5);
-  transition:all .2s; opacity:.4;
+.turn-next:hover { opacity:1; color:#b5892a; }
+.turn-prev {
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  font-family:'Cinzel',serif; font-size:22px; color:#8a6520;
+  opacity:.4; cursor:pointer; transition:opacity .2s, color .2s;
+  z-index:10; user-select:none; padding:20px 12px;
 }
-.emotion-confirm.ready { opacity:1; }
-.emotion-confirm.ready:hover { background:linear-gradient(135deg,#3a1e00,#4a2800); box-shadow:0 2px 12px rgba(181,137,42,.3); }
+.turn-prev:hover { opacity:1; color:#b5892a; }
 
+/* ── FRONTISPIECE ── */
+.avatar-page { align-items:center; justify-content:center; gap:28px; }
+.porthole-wrap { position:relative; }
+.porthole {
+  width:240px; height:240px; border-radius:50%; overflow:hidden;
+  border:6px solid #b5892a;
+  box-shadow:0 0 0 2px #7a5a18,0 0 0 14px #2a1a06,0 0 0 16px #8a6520,0 0 35px rgba(180,140,30,.35);
+}
+.porthole img { width:100%; height:100%; object-fit:cover; }
+.rivet {
+  position:absolute; width:12px; height:12px; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#d4a843,#7a5a18);
+  border:1px solid #4a3008; box-shadow:0 1px 3px rgba(0,0,0,.5);
+}
+.avatar-name {
+  font-family:'Cinzel',serif; font-size:22px; font-weight:600;
+  color:#2a1a06; letter-spacing:10px; text-align:center;
+}
+.avatar-rule { width:160px; height:1px; background:linear-gradient(90deg,transparent,#b5892a,transparent); position:relative; }
+.avatar-rule::after {
+  content:'◆'; position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  color:#b5892a; font-size:8px; background:#f4e8ce; padding:0 6px;
+}
+.avatar-sub {
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:13px; color:#6b4c1e; letter-spacing:2px; opacity:.7;
+}
+.toc-page { justify-content:flex-start; }
+.toc-heading {
+  font-family:'Cinzel',serif; font-size:15px; font-weight:700;
+  color:#2a1a06; letter-spacing:6px; text-align:center; margin-bottom:14px;
+}
+.toc-rule { width:100%; height:1px; margin-bottom:6px; background:linear-gradient(90deg,transparent,#b5892a 30%,#b5892a 70%,transparent); position:relative; }
+.toc-rule.top::before {
+  content:''; position:absolute; left:0; right:0; top:-3px; height:1px;
+  background:linear-gradient(90deg,transparent,#b5892a44 30%,#b5892a44 70%,transparent);
+}
+.toc-entry {
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:7px 0; border-bottom:1px solid rgba(139,90,30,.15);
+  font-family:'Cormorant Garamond',serif; font-size:13px; color:#3a2a10;
+  cursor:pointer; transition:color .2s;
+}
+.toc-entry:hover { color:#b5892a; }
+.toc-entry-title { flex:1; }
+.toc-entry-num { font-family:'Cinzel',serif; font-size:10px; color:#8a6520; letter-spacing:2px; margin-left:8px; }
+
+/* ── PAGE HEADING ── */
+.page-heading {
+  font-family:'Cinzel',serif; font-size:15px; font-weight:700;
+  color:#2a1a06; letter-spacing:6px; text-align:center; margin-bottom:14px;
+}
+.page-rule { width:100%; height:1px; margin-bottom:6px; background:linear-gradient(90deg,transparent,#b5892a 30%,#b5892a 70%,transparent); position:relative; }
+.page-rule.top::before {
+  content:''; position:absolute; left:0; right:0; top:-3px; height:1px;
+  background:linear-gradient(90deg,transparent,#b5892a44 30%,#b5892a44 70%,transparent);
+}
+.page-body { flex:1; padding-top:8px; overflow-y:auto; }
+.page-body::-webkit-scrollbar { width:4px; }
+.page-body::-webkit-scrollbar-track { background:transparent; }
+.page-body::-webkit-scrollbar-thumb { background:#b5892a44; border-radius:2px; }
+
+/* ── DREAM LIST ── */
+.dream-entry {
+  padding:10px 0; border-bottom:1px solid rgba(139,90,30,.15);
+  cursor:pointer; transition:background .15s;
+}
+.dream-entry:hover { background:rgba(181,137,42,.06); }
+.dream-entry-date {
+  font-family:'Cinzel',serif; font-size:9px; color:#8a6520; letter-spacing:2px; margin-bottom:3px;
+}
+.dream-entry-title {
+  font-family:'Cormorant Garamond',serif; font-size:13px; font-weight:600;
+  color:#2a1a06; line-height:1.4;
+}
+.dream-entry-meta {
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:11px; color:#8a6520; margin-top:3px;
+}
+
+/* ── DREAM TEXT VIEW ── */
+.dream-text-view { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+.dream-text-header { margin-bottom:12px; }
+.dream-text-date {
+  font-family:'Cinzel',serif; font-size:9px; color:#8a6520; letter-spacing:3px; margin-bottom:4px;
+}
+.dream-text-title {
+  font-family:'Cinzel',serif; font-size:13px; font-weight:700;
+  color:#2a1a06; letter-spacing:2px; line-height:1.4;
+}
+.dream-text-body {
+  flex:1; overflow-y:auto; padding-right:8px;
+  font-family:'Cormorant Garamond',serif; font-size:13.5px;
+  color:#2a1a06; line-height:1.8;
+}
+.dream-text-body::-webkit-scrollbar { width:4px; }
+.dream-text-body::-webkit-scrollbar-track { background:transparent; }
+.dream-text-body::-webkit-scrollbar-thumb { background:#b5892a44; border-radius:2px; }
+.dream-text-body span.highlight { background:rgba(212,168,67,.35); border-radius:2px; padding:1px 2px; transition:background .3s; }
+.dream-text-back {
+  margin-top:10px; font-family:'Cinzel',serif; font-size:9px;
+  color:#8a6520; letter-spacing:2px; cursor:pointer; opacity:.6;
+  transition:opacity .2s;
+}
+.dream-text-back:hover { opacity:1; }
+
+/* ── COMMENTARY PANEL ── */
+.commentary-entry {
+  padding:10px 0; border-bottom:1px solid rgba(139,90,30,.15);
+}
+.commentary-source {
+  font-family:'Cinzel',serif; font-size:9px; color:#8a6520;
+  letter-spacing:2px; margin-bottom:4px; display:flex; align-items:center; gap:6px;
+}
+.commentary-source-icon { font-size:12px; }
+.commentary-text {
+  font-family:'Cormorant Garamond',serif; font-size:13px;
+  font-style:italic; color:#3a2a10; line-height:1.6;
+}
+
+/* ── DREAM TREE SPREAD ── */
+.tree-page {
+  background: radial-gradient(ellipse at 50% 40%, #0d2a3a 0%, #061520 50%, #020d16 100%) !important;
+  background-image: none !important;
+}
+.tree-page::before { border-color: rgba(181,137,42,.15) !important; }
+
+/* Tree left page — the interactive tree */
+.tree-canvas {
+  width:100%; height:100%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  position:relative;
+  padding:32px 24px;
+}
+
+/* Breadcrumb nav */
+.tree-breadcrumb {
+  position:absolute; top:28px; left:28px; right:28px;
+  font-family:'Cinzel',serif; font-size:9px; color:#b5892a;
+  letter-spacing:2px; opacity:.7; z-index:20;
+  display:flex; align-items:center; gap:6px;
+}
+.tree-breadcrumb span { cursor:pointer; }
+.tree-breadcrumb span:hover { opacity:1; color:#d4a843; }
+.tree-breadcrumb .sep { opacity:.4; cursor:default; }
+
+/* Tree level label */
+.tree-level-label {
+  position:absolute; top:28px; right:36px;
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:11px; color:#b5892a; opacity:.6; z-index:20;
+}
+
+/* Time lens mini icon */
+.time-lens-mini {
+  position:absolute; bottom:36px; right:32px;
+  width:36px; height:36px; cursor:pointer; z-index:20;
+  opacity:.7; transition:opacity .2s;
+}
+.time-lens-mini:hover { opacity:1; }
+.time-lens-mini img { width:100%; height:100%; object-fit:contain; }
+
+/* Tree SVG area */
+.tree-svg-container {
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+}
+#treeSvg {
+  width:100%; height:480px;
+  overflow:visible;
+}
+
+/* Tree nodes */
+.tree-node {
+  cursor:pointer;
+  transition:transform .15s;
+}
+.tree-node:hover { transform:scale(1.08); }
+.tree-node image {
+  transition:opacity .2s;
+}
+.tree-node.dimmed image { opacity:.35; }
+.tree-node circle.node-bg {
+  fill:#0d2a3a;
+  stroke:#b5892a;
+  stroke-width:2;
+  transition:stroke .2s, stroke-width .2s;
+}
+.tree-node:hover circle.node-bg, .tree-node.active circle.node-bg {
+  stroke:#d4a843;
+  stroke-width:3;
+  filter:drop-shadow(0 0 8px rgba(212,168,67,.5));
+}
+.tree-node.tonic circle.node-bg {
+  stroke:#d4a843; stroke-width:3;
+  fill:#0a1e2a;
+}
+.node-label {
+  font-family:'Cinzel',serif; font-size:8px;
+  fill:#b5892a; text-anchor:middle;
+  pointer-events:none; letter-spacing:1px;
+}
+.node-label.tonic-label {
+  font-size:9px; fill:#d4a843;
+}
+
+/* Connector lines */
+.tree-connector {
+  stroke:#b5892a;
+  stroke-width:1.5;
+  fill:none;
+  opacity:.4;
+  stroke-dasharray:4,3;
+}
+
+/* Tree right page — dream text */
+.dream-text-page {
+  display:flex; flex-direction:column;
+  background: #f0e6c8 !important;
+  padding:44px 48px;
+  height:100%;
+}
+.dream-sacred-text {
+  flex:1; overflow-y:auto; padding-right:8px;
+  font-family:'Cormorant Garamond',serif; font-size:13px;
+  color:#2a1a06; line-height:1.9;
+}
+.dream-sacred-text::-webkit-scrollbar { width:4px; }
+.dream-sacred-text::-webkit-scrollbar-track { background:transparent; }
+.dream-sacred-text::-webkit-scrollbar-thumb { background:#b5892a44; }
+.dream-sacred-text .hl { background:rgba(212,168,67,.4); border-radius:2px; padding:1px 2px; transition:background .4s; }
+
+/* Time lens overlay */
+.time-lens-overlay {
+  display:none; position:fixed; inset:0; z-index:1000;
+  background:rgba(0,0,0,.7); align-items:center; justify-content:center;
+}
+.time-lens-overlay.open { display:flex; }
+.time-lens-panel {
+  background:linear-gradient(145deg,#1a0d04,#2a1500);
+  border:2px solid #b5892a;
+  border-radius:50%; width:360px; height:360px;
+  position:relative; display:flex; align-items:center; justify-content:center;
+  box-shadow:0 0 60px rgba(181,137,42,.3);
+}
+.time-lens-inner {
+  text-align:center;
+  font-family:'Cinzel',serif; color:#d4a843;
+}
+.time-lens-inner h3 { font-size:13px; letter-spacing:4px; margin-bottom:12px; }
+.time-lens-inner p { font-size:10px; color:#b5892a; letter-spacing:2px; opacity:.7; margin-bottom:16px; }
+.time-lens-filters { display:flex; flex-direction:column; gap:6px; }
+.tlf-btn {
+  background:transparent; border:1px solid #b5892a44;
+  color:#b5892a; font-family:'Cinzel',serif; font-size:9px;
+  letter-spacing:2px; padding:6px 16px; cursor:pointer;
+  transition:all .2s; border-radius:2px;
+}
+.tlf-btn:hover, .tlf-btn.active { background:#b5892a22; border-color:#d4a843; color:#d4a843; }
+.time-lens-close {
+  position:absolute; top:-16px; right:-16px;
+  width:32px; height:32px; border-radius:50%;
+  background:#b5892a; border:none; cursor:pointer;
+  font-size:14px; color:#1a0d04; display:flex; align-items:center; justify-content:center;
+}
+
+/* Status bar */
+.tree-status {
+  position:absolute; bottom:60px; left:28px; right:60px;
+  font-family:'IM Fell English',serif; font-style:italic;
+  font-size:11px; color:#b5892a; opacity:.6; z-index:20;
+  line-height:1.4;
+}
 </style>
 </head>
 <body>
 
-<!-- ══ STATE 1: COVER ══ -->
-<div id="s-cover" class="state active" onclick="goTo('s-frontispiece'); autoOpenSidebar();">
-  <div class="cover-wrap">
+<!-- ═══════════════════════════════════════ -->
+<!-- STATE 1: COVER -->
+<!-- ═══════════════════════════════════════ -->
+<div id="state-closed" class="grimoire-state active">
+  <div class="cover-book" id="cover">
     <div class="cover-spine"></div>
-    <div class="cover-board">
-      <div class="cover-corner tl">❧</div>
-      <div class="cover-corner tr">❧</div>
-      <div class="cover-corner bl">❧</div>
-      <div class="cover-corner br">❧</div>
+    <div class="cover-front">
+      <span class="gear tl">⚙</span><span class="gear tr">⚙</span>
+      <span class="gear bl">⚙</span><span class="gear br">⚙</span>
       <div class="cover-porthole">
         <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
       </div>
       <div class="cover-title">My Dream<br>Grimoire</div>
       <div class="cover-rule"></div>
-      <div class="cover-byline">Pierrot Lunaire · ADOP · Experiment V</div>
-      <div class="cover-open-hint">— click to open —</div>
+      <div class="cover-sub">ADOP · EXPERIMENT V</div>
+      <div class="cover-hint">— open —</div>
     </div>
   </div>
 </div>
 
-<!-- ══ STATE 2: FRONTISPIECE ══ -->
-<div id="s-frontispiece" class="state">
-  <div class="book-outer">
-    <!-- ORB SIDEBAR -->
-    <div class="orb-sidebar hidden" id="orbSidebar">
-      <div class="orb-tab" onclick="toggleSidebar()" title="Navigation">
-        <span class="orb-tab-icon">⚙</span>
-      </div>
-
-      <div class="orb-item locked" id="orb-dreams" onclick="orbClick('dreams')">
-        <div class="orb-circle">
-          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Dreams" style="filter:grayscale(.4) brightness(.7)">
-          <div class="orb-locked-overlay">🔒</div>
+<!-- ═══════════════════════════════════════ -->
+<!-- STATE 2: FRONTISPIECE -->
+<!-- ═══════════════════════════════════════ -->
+<div id="state-frontispiece" class="grimoire-state">
+  <div class="book">
+    <div class="page left">
+      <div class="page-inner avatar-page">
+        <div class="porthole-wrap">
+          <div class="porthole">
+            <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
+          </div>
+          <div class="rivet" style="top:-2px;left:50%;transform:translateX(-50%)"></div>
+          <div class="rivet" style="bottom:-2px;left:50%;transform:translateX(-50%)"></div>
+          <div class="rivet" style="left:-2px;top:50%;transform:translateY(-50%)"></div>
+          <div class="rivet" style="right:-2px;top:50%;transform:translateY(-50%)"></div>
+          <div class="rivet" style="top:8px;left:8px;"></div>
+          <div class="rivet" style="top:8px;right:8px;"></div>
+          <div class="rivet" style="bottom:8px;left:8px;"></div>
+          <div class="rivet" style="bottom:8px;right:8px;"></div>
         </div>
-        <div class="orb-label-tab">Dreams</div>
+        <div class="avatar-name">PIERROT</div>
+        <div class="avatar-rule"></div>
+        <div class="avatar-sub">Pierrot Lunaire · Dreamer</div>
       </div>
-
-      <div class="orb-item locked" id="orb-commentaries" onclick="orbClick('commentaries')">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#ffd060,#c08000,#3a2000);">
-          <div class="orb-locked-overlay">🔒</div>
+      <div class="turn-prev" id="to-cover">‹</div>
+      <div class="page-num left">i</div>
+    </div>
+    <div class="spine-seam"></div>
+    <div class="page right">
+      <div class="page-inner toc-page">
+        <div class="toc-heading">Table of Contents</div>
+        <div class="toc-rule top"></div>
+        <div class="toc-rule"></div>
+        <div style="padding-top:12px;">
+          <div class="toc-entry" onclick="showState('state-open')">
+            <span class="toc-entry-title">☽ &nbsp; Dreams &amp; Commentaries</span>
+            <span class="toc-entry-num">I</span>
+          </div>
+          <div class="toc-entry" onclick="showState('state-tree')">
+            <span class="toc-entry-title">✦ &nbsp; Dream Tree</span>
+            <span class="toc-entry-num">II</span>
+          </div>
+          <div class="toc-entry" style="opacity:.4; cursor:default;">
+            <span class="toc-entry-title">⬡ &nbsp; Image Gallery</span>
+            <span class="toc-entry-num">III</span>
+          </div>
+          <div class="toc-entry" style="opacity:.4; cursor:default;">
+            <span class="toc-entry-title">◎ &nbsp; Nereid</span>
+            <span class="toc-entry-num">IV</span>
+          </div>
+          <div class="toc-entry" style="opacity:.2; cursor:default;">
+            <span class="toc-entry-title">~ &nbsp; Search</span>
+            <span class="toc-entry-num">—</span>
+          </div>
         </div>
-        <div class="orb-label-tab">Commentaries</div>
       </div>
+      <div class="turn-next" id="to-open">›</div>
+      <div class="page-num right">ii</div>
+    </div>
+  </div>
+</div>
 
-      <div class="orb-item locked" id="orb-images">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#8090c0,#304080,#101830);">
-          <div class="orb-locked-overlay">🔒</div>
+<!-- ═══════════════════════════════════════ -->
+<!-- STATE 3: DREAMS + COMMENTARIES -->
+<!-- ═══════════════════════════════════════ -->
+<div id="state-open" class="grimoire-state">
+  <div class="book">
+    <div class="page left">
+      <div class="page-inner">
+        <div class="page-heading">Dreams</div>
+        <div class="page-rule top"></div>
+        <div class="page-rule"></div>
+        <div class="page-body" id="dreamList"></div>
+      </div>
+      <div class="turn-prev" id="to-frontispiece-from-open">‹</div>
+      <div class="page-num left">1</div>
+    </div>
+    <div class="spine-seam"></div>
+    <div class="page right">
+      <div class="page-inner">
+        <div class="page-heading">Commentaries</div>
+        <div class="page-rule top"></div>
+        <div class="page-rule"></div>
+        <div class="page-body" id="commentaryPanel">
+          <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:13px;color:#8a6520;opacity:.6;padding-top:20px;text-align:center;">
+            Select a dream to view commentaries.
+          </div>
         </div>
-        <div class="orb-label-tab">Images</div>
       </div>
+      <div class="turn-next" id="to-tree-from-open">›</div>
+      <div class="page-num right">2</div>
+    </div>
+  </div>
+</div>
 
-      <div class="orb-item locked" id="orb-tree">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#60c080,#1a6030,#082010);">
-          <div class="orb-locked-overlay">🔒</div>
+<!-- ═══════════════════════════════════════ -->
+<!-- STATE 4: DREAM TREE (full spread or split-page) -->
+<!-- ═══════════════════════════════════════ -->
+<div id="state-tree" class="grimoire-state">
+  <div class="book">
+
+    <!-- LEFT PAGE: always the tree -->
+    <div class="page left tree-page" id="treeLeftPage">
+      <div class="tree-canvas">
+        <div class="tree-breadcrumb" id="treeBreadcrumb"></div>
+        <div class="tree-level-label" id="treeLevelLabel"></div>
+        <div class="tree-svg-container">
+          <svg id="treeSvg" viewBox="0 0 440 480"></svg>
         </div>
-        <div class="orb-label-tab">Dream Tree</div>
-      </div>
-
-      <div class="orb-item locked" id="orb-nereid">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#80c0d0,#207080,#082030);">
-          <div class="orb-locked-overlay">🔒</div>
+        <div class="tree-status" id="treeStatus"></div>
+        <div class="time-lens-mini" id="timeLensMini" title="Adjust Time Lens">
+          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/4c4cbe28d_TimeSphere1.png" alt="Time Lens">
         </div>
-        <div class="orb-label-tab">Nereid</div>
       </div>
-
-      <div class="orb-separator"></div>
-
-      <div class="orb-item locked" id="orb-search">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#a0a0b0,#404050,#101018); opacity:.4;">
-          <div class="orb-locked-overlay" style="color:#303040;">◉</div>
-        </div>
-        <div class="orb-label-tab" style="opacity:.3;">Search</div>
-      </div>
+      <div class="turn-prev" id="to-open-from-tree">‹</div>
+      <div class="page-num left">3</div>
     </div>
 
-    <div class="book sidebar-open" id="mainBook">
-      <!-- LEFT: Avatar -->
-      <div class="page left">
-        <div class="page-inner">
-          <div class="avatar-wrap">
-            <div class="porthole-lg" style="position:relative;">
-              <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Pierrot Lunaire">
-              <div class="rivet-lg" style="top:-3px;left:50%;transform:translateX(-50%)"></div>
-              <div class="rivet-lg" style="bottom:-3px;left:50%;transform:translateX(-50%)"></div>
-              <div class="rivet-lg" style="left:-3px;top:50%;transform:translateY(-50%)"></div>
-              <div class="rivet-lg" style="right:-3px;top:50%;transform:translateY(-50%)"></div>
-            </div>
-            <div class="avatar-name-lg">PIERROT</div>
-            <div class="avatar-rule-lg"></div>
-            <div class="avatar-sub-lg">Pierrot Lunaire · Dreamer</div>
+    <div class="spine-seam"></div>
+
+    <!-- RIGHT PAGE: opening tree info OR dream text in split-page mode -->
+    <div class="page right tree-page" id="treeRightPage">
+      <!-- Opening / Constellation info panel -->
+      <div id="treeInfoPanel" class="page-inner" style="justify-content:center;align-items:center;">
+        <div style="text-align:center;padding:40px 32px;">
+          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/82f6813a2_1AvatarOpeningTree1.png"
+               alt="Avatar Tree" style="width:260px;height:260px;object-fit:contain;opacity:.55;border-radius:8px;margin-bottom:20px;">
+          <div style="font-family:'Cinzel',serif;font-size:11px;color:#b5892a;letter-spacing:3px;opacity:.7;margin-bottom:10px;">OPENING AVATAR TREE</div>
+          <div style="font-family:'IM Fell English',serif;font-style:italic;font-size:12px;color:#b5892a;opacity:.5;line-height:1.7;">
+            Click any node to explore<br>your dream corpus.
           </div>
         </div>
-        <div class="page-num left">i</div>
       </div>
 
-      <div class="spine-seam"></div>
+      <!-- Split-page: sacred dream text -->
+      <div id="treeDreamTextPanel" style="display:none;" class="dream-text-page">
+        <div class="dream-text-header" id="dreamTextHeader"></div>
+        <div class="page-rule top" style="margin-bottom:12px;"></div>
+        <div class="page-rule" style="margin-bottom:12px;"></div>
+        <div class="dream-sacred-text" id="dreamSacredText"></div>
+        <div class="dream-text-back" id="dreamTextBack">↩ return to tree</div>
+      </div>
 
-      <!-- RIGHT: TOC -->
-      <div class="page right">
-        <div class="page-inner">
-          <div class="page-heading">Table of Contents</div>
-          <div class="heading-rule double"></div>
-          <div class="heading-rule"></div>
-          <div class="toc-body">
-            <div class="toc-item">
-              <span class="toc-item-num">I</span>How the World Sees Me
-              <span class="toc-item-dots"></span><span class="toc-item-page">1</span>
-            </div>
-            <div class="toc-item">
-              <span class="toc-item-num">II</span>How I See Myself
-              <span class="toc-item-dots"></span><span class="toc-item-page">2</span>
-            </div>
-            <div class="toc-item">
-              <span class="toc-item-num">III</span>Dreams
-              <span class="toc-item-dots"></span><span class="toc-item-page">3</span>
-            </div>
-            <div class="toc-item">
-              <span class="toc-item-num">IV</span>Commentaries
-              <span class="toc-item-dots"></span><span class="toc-item-page">4</span>
-            </div>
-            <div class="toc-item toc-locked">
-              <span class="toc-item-num">V</span>Images
-              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
-            </div>
-            <div class="toc-item toc-locked">
-              <span class="toc-item-num">VI</span>Dream Tree
-              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
-            </div>
-            <div class="toc-item toc-locked">
-              <span class="toc-item-num">VII</span>Nereid
-              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
-            </div>
-            <div class="toc-item toc-locked">
-              <span class="toc-item-num">VIII</span>Search
-              <span class="toc-item-dots"></span><span class="toc-item-page">—</span>
-            </div>
-          </div>
-        </div>
-        <div class="turn-arrow right" onclick="goTo('s-open')">turn ›</div>
-        <div class="page-num right">ii</div>
+      <div class="page-num right">4</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Time Lens Overlay -->
+<div class="time-lens-overlay" id="timeLensOverlay">
+  <div class="time-lens-panel">
+    <div class="time-lens-close" id="timeLensClose">✕</div>
+    <div class="time-lens-inner">
+      <h3>TIME LENS</h3>
+      <p>filter the corpus</p>
+      <div class="time-lens-filters">
+        <button class="tlf-btn active" data-filter="4w">Last 4 Weeks</button>
+        <button class="tlf-btn" data-filter="3m">Last 3 Months</button>
+        <button class="tlf-btn" data-filter="1y">Last Year</button>
+        <button class="tlf-btn" data-filter="all">All Time</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ STATE 3: DREAMS + COMMENTARIES ══ -->
-<div id="s-open" class="state">
-  <div class="book-outer">
-    <!-- ORB SIDEBAR -->
-    <div class="orb-sidebar" id="orbSidebar2">
-      <div class="orb-tab" onclick="toggleSidebar2()" title="Navigation">
-        <span class="orb-tab-icon">⚙</span>
-      </div>
-
-      <div class="orb-item" id="orb2-dreams" onclick="orbClick2('dreams')">
-        <div class="orb-circle">
-          <img src="https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg" alt="Dreams" style="filter:grayscale(.3)">
-          <div class="orb-locked-overlay" id="lock2-dreams">🔒</div>
-        </div>
-        <div class="orb-label-tab">Dreams</div>
-      </div>
-
-      <div class="orb-item" id="orb2-commentaries" onclick="orbClick2('commentaries')">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#ffd060,#c08000,#3a2000);">
-          <div class="orb-locked-overlay" id="lock2-commentaries">🔒</div>
-        </div>
-        <div class="orb-label-tab">Commentaries</div>
-      </div>
-
-      <div class="orb-item locked">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#8090c0,#304080,#101830);">
-          <div class="orb-locked-overlay">🔒</div>
-        </div>
-        <div class="orb-label-tab">Images</div>
-      </div>
-
-      <div class="orb-item locked">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#60c080,#1a6030,#082010);">
-          <div class="orb-locked-overlay">🔒</div>
-        </div>
-        <div class="orb-label-tab">Dream Tree</div>
-      </div>
-
-      <div class="orb-item locked">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#80c0d0,#207080,#082030);">
-          <div class="orb-locked-overlay">🔒</div>
-        </div>
-        <div class="orb-label-tab">Nereid</div>
-      </div>
-
-      <div class="orb-separator"></div>
-
-      <div class="orb-item locked">
-        <div class="orb-circle" style="background:radial-gradient(circle at 40% 35%,#a0a0b0,#404050,#101018); opacity:.4;">
-          <div class="orb-locked-overlay" style="color:#303040;">◉</div>
-        </div>
-        <div class="orb-label-tab" style="opacity:.3;">Search</div>
-      </div>
-    </div>
-
-    <div class="book sidebar-open" id="mainBook2">
-
-      <!-- LEFT: Dreams -->
-      <div class="page left" style="position:relative;">
-        <div class="page-inner">
-          <div class="page-heading">Dreams</div>
-          <div class="heading-rule double"></div>
-          <div class="heading-rule"></div>
-          <div class="page-body">
-            <div class="placeholder-text">— dream entries will appear here —</div>
-          </div>
-        </div>
-
-        <!-- DEMOGRAPHIC GATE OVERLAY -->
-        <div class="demo-gate" id="demoGate">
-          <div class="gate-seal">⚜</div>
-          <div class="gate-title">Before You Begin</div>
-          <div class="gate-rule"></div>
-          <div class="gate-text">
-            To unlock your Grimoire, complete two brief passages:<br><br>
-            <em>How the World Sees Me</em><br>and<br>
-            <em>How I See Myself</em>
-          </div>
-          <div class="gate-rule"></div>
-          <button class="gate-btn" onclick="completeDemographic()">Begin the Passages →</button>
-        </div>
-
-        <div class="eod-btn-wrap" id="eodBtnWrap" style="display:none;">
-          <button class="eod-btn" onclick="openEmotionPanel()">⚜ End of Dream · Record Tone</button>
-        </div>
-
-        <div class="turn-arrow left" onclick="goTo('s-frontispiece')">‹ turn</div>
-        <div class="page-num left">1</div>
-      </div>
-
-      <div class="spine-seam"></div>
-
-      <!-- RIGHT: Commentaries + Emotion Panel -->
-      <div class="page right" style="position:relative; overflow:hidden;">
-        <div class="page-inner">
-          <div class="page-heading">Commentaries</div>
-          <div class="heading-rule double"></div>
-          <div class="heading-rule"></div>
-          <div class="page-body">
-            <div class="placeholder-text">— commentaries will appear here —</div>
-          </div>
-        </div>
-
-        <!-- EMOTION PANEL sweeps over right page -->
-        <div class="emotion-panel" id="emotionPanel">
-          <div class="emotion-panel-inner">
-            <div class="emotion-heading">Emotional Tone</div>
-            <div class="emotion-sub">Select all that apply.<br>This dream will not close until a tone is recorded.</div>
-            <div class="emotion-rule"></div>
-
-            <div class="gem-list">
-              <div class="gem-row" onclick="toggleGem(this,'Love')">
-                <div class="gem gem-love"><div class="gem-inner"></div></div>
-                <span class="gem-label">Love</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Erotic')">
-                <div class="gem gem-erotic"><div class="gem-inner"></div></div>
-                <span class="gem-label">Erotic</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Excitement')">
-                <div class="gem gem-excite"><div class="gem-inner"></div></div>
-                <span class="gem-label">Excitement</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Heroic / Triumphant')">
-                <div class="gem gem-heroic"><div class="gem-inner"></div></div>
-                <span class="gem-label">Heroic / Triumphant</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Fearful')">
-                <div class="gem gem-fearful"><div class="gem-inner"></div></div>
-                <span class="gem-label">Fearful</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Anxiety')">
-                <div class="gem gem-anxiety"><div class="gem-inner"></div></div>
-                <span class="gem-label">Anxiety</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Depression')">
-                <div class="gem gem-depress"><div class="gem-inner"></div></div>
-                <span class="gem-label">Depression</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Awe')">
-                <div class="gem gem-awe"><div class="gem-inner"></div></div>
-                <span class="gem-label">Awe</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Nostalgia')">
-                <div class="gem gem-nostalg"><div class="gem-inner"></div></div>
-                <span class="gem-label">Nostalgia</span>
-              </div>
-              <div class="gem-separator"></div>
-              <div class="gem-row" onclick="toggleGem(this,'Neutral')">
-                <div class="gem gem-neutral"><div class="gem-inner"></div></div>
-                <span class="gem-label">Neutral</span>
-              </div>
-              <div class="gem-row" onclick="toggleGem(this,'Repulsive')">
-                <div class="gem gem-repuls"><div class="gem-inner"></div></div>
-                <span class="gem-label">Repulsive</span>
-              </div>
-            </div>
-
-            <div class="emotion-confirm-wrap">
-              <button class="emotion-confirm" id="emotionConfirm" onclick="confirmEmotions()">
-                ✦ &nbsp; Confirm Selection &nbsp; ✦
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="page-num right">2</div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
+<!-- ═══════════════════════════════════════════════════════════ -->
 <script>
-var gameLevel = 0;        // 0 = locked, 1 = demographic done
-var selectedEmotions = [];
-var sidebarOpen1 = false;
-var sidebarOpen2 = true;
+// ── ICON URLs ──────────────────────────────────────────────
+const ICONS = {
+  p3:       'https://media.base44.com/images/public/6a126bc38b8e94270db6b587/e29c2c2c2_3P3.png',
+  p5:       'https://media.base44.com/images/public/6a126bc38b8e94270db6b587/7a6cc3d96_3P5.png',
+  p7:       'https://media.base44.com/images/public/6a126bc38b8e94270db6b587/0aa6acc14_3P7transparent.png',
+  pierrot:  'https://media.base44.com/images/public/6a126bc38b8e94270db6b587/295d19f60_PierrotLunaireSteamPunkCircle.jpeg',
+  timelens: 'https://media.base44.com/images/public/6a126bc38b8e94270db6b587/4c4cbe28d_TimeSphere1.png',
+};
 
-function goTo(id) {
-  var states = document.querySelectorAll('.state');
-  for (var i = 0; i < states.length; i++) states[i].classList.remove('active');
+// ── BAKED DREAM DATA ──────────────────────────────────────
+const DREAMS = [
+  {
+    id:'d01', date:'1978-11-24', pod:'Twins',
+    title:'Twins Dream 4 — Samurai Sword, Injections, Transsexual Twin, Parchment',
+    type:'narrative', demo_safe:false,
+    text:'I had a samurai sword and was on my way home passing through downtown Atlanta. A guy sitting on the stairs outside the Trust Company bank said something to me about what an easy day to make $80.00 it was today. I was interested — all I had to do was go pick up something down the street. I went down the street a little ways where a man was giving injections using a fairly long needle at the base of the spinal column. A man in the crowd was a transsexual twin wearing a red and yellow shirt. I was given a parchment with 4 golden nails. An oracular girl sat by a fireplace in a strange yard with orange spiraled metallic rods and a crude fountain. Lynx-like cats moved through the shadows.',
+    segments:[
+      {num:1,label:'Segment i',p1:'Dreamer in Atlanta',p3:'Transsexual twin',p5:null,p7:'Injection at spinal column',p7_cat:'biological',p7_anchor:'a man was giving injections using a fairly long needle at the base of the spinal column',p11:null,summary:'Biological boundary violation — spinal injection as initiatory threshold.'}
+    ]
+  },
+  {
+    id:'d02', date:'1978-12-07', pod:'Twins',
+    title:'Twins Dream 2 — Alchemical Cave, Gold, Astral Failure',
+    type:'narrative', demo_safe:false,
+    text:'An astral travel dream in which I did not take advantage of the situation again. These were girls, one with short dark hair, that told me how I was still confused and restricted by ideals or sense of morality — my actions were encumbered and my vision blurred by them. It was a dark night and the house had yellow or perhaps white walls. Outside by myself I was walking in the night over an old earthen and rock overpass; the road below led to an old tunnel, a cave tunnel which glowed gold from within. I knew that I could enter and face my demons or dragons or whatever but I was afraid. When I looked up to the starry night I realized that this was a dream for astral projection, but it was too late — my surge upwards was not free enough. I was too immersed; my awareness would not leave the body. I lifted and fell to the ground and rolled in the tall grass, mental blurs like cobwebs all about me. I realized then that the Cave was an alchemical presentation. I was to enter and descend to the center of the earth, there to make the gold — but I had not done so. I was not to go up but inward. I then entered into a kind of nightclub. I descended into it. The walls were vivid red. I could hear my song "la selva" being played. It was an elegant, almost plush place — chandeliers, red velvet walls, and marble statues. The statues were of me; they were facing me as I walked through the various rooms. Some were chipped a little. They were in color. I was perplexed.',
+    segments:[
+      {num:1,label:'Segment i',p1:'Dreamer outside at night',p3:'Dark-haired girl',p5:null,p7:'Astral surge failure — awareness cannot leave body',p7_cat:'biological',p7_anchor:'my surge upwards was not free enough. I was too immersed; my awareness would not leave the body',p11:'Cave realized as alchemical descent — inward not upward',summary:'Astral failure — moral encumbrance prevents transcendence; alchemical cave as alternative path.'},
+      {num:2,label:'Segment ii',p1:'Dreamer in red nightclub',p3:null,p5:'Marble statues of Dreamer',p7:'Descent into red room — identity mirror',p7_cat:'environmental',p7_anchor:'The walls were vivid red. The statues were of me',p11:null,summary:'Red room with self-statues — identity confrontation, symbolic self-reflection.'}
+    ]
+  },
+  {
+    id:'d03', date:'1989-06-26', pod:'Twins',
+    title:'Twins Dream 5 — Beautiful Tornado, Ace of Spades, Time Acceleration',
+    type:'narrative', demo_safe:false,
+    text:'At the top of the hill, New England brick architecture. I am driving my car and I stopped because of a tree having fallen in the road. I get out and look back — the clouds are gathering and approaching, they are awesome. I see the drop and I realize a tornado is coming down — beautiful. I want to see it. The clouds above are silhouettes of court cards. I want to decide which way to go to observe the tornado without being caught in it. Two women 45 to 50 are walking away, both dressed in drab 60s/50s clothing, both blonde. I only see them from behind. One walks towards the tornado, the other to my left. I followed the one to my left down the slope to a tree — the woman is there only briefly. The tornado goes by and it is beautiful. On retelling the dream to someone after I thought I had awakened from the dream, the tornado was the ace of spades. We are driving along cliffs and hills above a beach, somewhat recklessly. Down below I see the waves are very large and I wish to go see them. We drive down to the beach and indeed the waves are up to 20 to 30 feet but I see that I am speeded up — the waves can be seen as solid and still. I am moving so much faster that everything else seems to be standing still.',
+    segments:[
+      {num:1,label:'Segment i',p1:'Dreamer on hilltop',p3:'Two blonde women',p5:null,p7:'Tornado approaching',p7_cat:'environmental',p7_anchor:'a tornado is coming down — beautiful',p11:'Tornado revealed as Ace of Spades on retelling',summary:'Environmental spectacle — tornado as beautiful threat, Dreamer navigates rather than flees.'},
+      {num:2,label:'Segment ii',p1:'Dreamer on coastal cliffs',p3:null,p5:null,p7:'Time acceleration — waves frozen',p7_cat:'systemic',p7_anchor:'I am moving so much faster that everything else seems to be standing still',p11:null,summary:'Systemic time distortion — Dreamer experiences temporal acceleration relative to world.'}
+    ]
+  },
+  {
+    id:'d04', date:'2025-11-24', pod:'Pod V',
+    title:'Anchor Dream — Red Plane / Blue Repair',
+    type:'narrative', demo_safe:true,
+    text:'I am on a red plane. There are problems with the plane — it is not clear what they are exactly at first. The smell was alarming. The plane begins to descend. I realize we are losing altitude. There is something wrong. We are obviously losing altitude. Father acknowledged departure — mission-orientation with male companion established. We landed. Diana appears — she is waiting. The computer had arranged my crash and saved me. The subconscious as architect of the entire dream sequence. This computer had arranged my crash and saved me.',
+    segments:[
+      {num:1,label:'Red Segment — Departure',p1:'Dreamer on aircraft',p3:'Knowing male companion',p5:null,p7:'Aircraft destabilization — altitude loss',p7_cat:'environmental',p7_anchor:'We were obviously losing altitude',p11:'Power lines sighted — altitude loss confirmed',summary:'Uncontrolled departure / environmental destabilization / adaptive navigation / guided landing.'},
+      {num:2,label:'Blue Segment — Repair',p1:'Dreamer at landing site',p3:'Diana',p5:null,p7:'None',p7_cat:'none',p7_anchor:null,p11:null,summary:'Interlude during repair. Blue chromatic field maintained. Diana appears. Dreamer waits.'},
+      {num:3,label:'Segment iii',p1:'Dreamer in transit',p3:null,p5:null,p7:'Entry into ocean',p7_cat:'environmental',p7_anchor:'me and others are jumping from a cliff into the wide ocean',p11:null,summary:'Boundary crossing into deep ocean — adaptive transition into vast unknown field.'},
+      {num:4,label:'Segment iv — Meta-Revelation',p1:'Dreamer',p3:null,p5:null,p7:'System revelation',p7_cat:'systemic',p7_anchor:'This computer had arranged my crash and saved me',p11:null,summary:'Systemic meta-revelation — the subconscious as architect of the entire dream sequence.'}
+    ]
+  },
+  {
+    id:'d05', date:'2026-01-10', pod:'Pod V',
+    title:'Green Sky Snake',
+    type:'narrative', demo_safe:true,
+    text:"I am on an elevated walkway. There is a green sky snake — large, luminous, the color of new leaves against a dark sky. The snake's head lowers down towards me from above. I am aware of it, watching it carefully. The snake descends slowly. I remain still, observing. There is a quality of test about this encounter — as if the snake is measuring me as much as I am measuring it. The terminus is ambiguous. No clear resolution. The encounter simply ends.",
+    segments:[
+      {num:1,label:'Single Segment',p1:'Dreamer on elevated walkway',p3:'Green sky snake',p5:null,p7:'Descending snake',p7_cat:'biological',p7_anchor:"The snake's head lowers down",p11:null,summary:'Biological threat contained by Dreamer — ambiguous termination, no P16 resolution.'}
+    ]
+  },
+  {
+    id:'d06', date:'2026-01-21', pod:'Pod V',
+    title:'Red and Yellow, Blue — Colors Under the Shower',
+    type:'narrative', demo_safe:true,
+    text:'The colors red and yellow subdued were extremely important in a scene in which I am sitting beneath a shower. What are my favorite things — a nice hot shower — and I am feeling rejuvenated and the colors associated with the shower like in certain droplets sprinkling around was red and yellow. After having been feeling very sick to my stomach for 3 days I woke up this morning feeling really wonderful. The color blue was definitely associated with a process — it had to do with solving things or attending to processes, something like that.',
+    segments:[
+      {num:1,label:'Single Segment',p1:'Dreamer beneath shower',p3:null,p5:null,p7:'Color field emergence — red/yellow in droplets',p7_cat:'environmental',p7_anchor:'the colors associated with the shower like in certain droplets sprinkling around was red and yellow',p11:null,summary:'Chromatic healing field — red/yellow as rejuvenation, blue as process/resolution.'}
+    ]
+  },
+  {
+    id:'d07', date:'2026-02-08', pod:'Pod V',
+    title:'Mamasita — Night Flight',
+    type:'narrative', demo_safe:true,
+    text:'A night flight. I am moving through a dark sky, aware of myself as a traveler above the ground. There is a figure called Mamasita — warm, maternal, present in the dark around me. She is not threatening. The night is expansive. I feel the vastness of the sky. There is a quality of guidance about her presence, as though the night flight is sanctioned, overseen. I do not land during the dream — the flight continues beyond my awareness of it.',
+    segments:[
+      {num:1,label:'Single Segment',p1:'Dreamer in night flight',p3:'Mamasita — maternal guide figure',p5:null,p7:'Entry into vast dark sky alone',p7_cat:'environmental',p7_anchor:'I am moving through a dark sky, aware of myself as a traveler above the ground',p11:null,summary:'Sanctioned night flight — maternal guide present in dark, expansive sky. No landing.'}
+    ]
+  },
+  {
+    id:'d08', date:'2026-03-15', pod:'Pod V',
+    title:'Possession Event — Dreamer Controls Rate',
+    type:'narrative', demo_safe:true,
+    text:'A possessing entity begins appearing through a girl. I am watching this carefully. I understand that I have some control over the rate at which the possession occurs. I deliberately slow it — a three-phase strategy. First I assess. Then I delay. Then I engage on my terms. The possessor begins appearing through the girl in increments. I manage the encounter through deliberate pacing. The systemic nature of the possession is fully apparent to me — I understand what I am dealing with. The encounter concludes with the possession contained, not eliminated.',
+    segments:[
+      {num:1,label:'Single Segment',p1:'Dreamer in enclosed space',p3:null,p5:'Possessed girl',p7:'Emergence of possessing entity',p7_cat:'systemic',p7_anchor:'Possessor begins appearing through girl',p11:'Three-phase deliberate strategy executed',summary:'Systemic possession event — Dreamer controls destabilization rate through deliberate three-phase strategy.'}
+    ]
+  },
+  {
+    id:'d09', date:'2026-03-20', pod:'Pod V',
+    title:'The Blonde Lady and Diana — Preferred the Other',
+    type:'narrative', demo_safe:false,
+    text:"There is a blonde lady that I am very attracted to. And I find out that she is very receptive. Someone is telling me that I should act. I decide that I want to give her three things, but I know Diana is on her way so I want to leave them with the people at the hotel. But the same people are telling me to give it to her in person. As I try to give her the items I can see Diana on her way. I have to leave them with the people and I am laying them on the floor. Diana is there. She has fair skin and dark hair, blue eyes. She asked me if I 'preferred the other'. I thought she knew about the blonde lady and I said to her a flat 'no, not at all'. But I also knew as I said it that I was lying. I felt like I couldn't possibly tell her the truth. But as it turned out, she was not asking me about the other lady — she was asking me about the other room! I was relieved when I realized that.",
+    segments:[
+      {num:1,label:'Single Segment',p1:'Dreamer at hotel',p3:'Diana',p5:'Blonde lady',p7:'Diana arrives — conflict of loyalties',p7_cat:'social',p7_anchor:"Diana is on her way",p11:'Misunderstanding resolved — relief at disambiguation',summary:'Social tension — erotic divided loyalty, misunderstanding provides escape from moral confrontation.'}
+    ]
+  },
+  {
+    id:'d10', date:'2026-01-11', pod:'Pod V',
+    title:'Owl-Man Scientist — Hybrid Transformation',
+    type:'narrative', demo_safe:true,
+    text:"A scientist and a girl with mousy brown hair. The scientist's experiment converts him — he becomes an owl-bodied figure, a hybrid. The transformation is systemic, total. Esoteric knowledge is transmitted in the process. The girl witnesses. I witness. The hybrid entity is the result of the experiment, not an accident. There is a quality of inevitability about the transformation. The knowledge transmitted is not verbal — it is structural, implicit in the form of the new being.",
+    segments:[
+      {num:1,label:'Single Segment',p1:'Dreamer as witness',p3:'Owl-man scientist / girl with mousy brown hair',p5:null,p7:'Hybrid transformation',p7_cat:'systemic',p7_anchor:'Scientist becomes owl-bodied figure',p11:null,summary:"Systemic transformation — scientist's experiment converts him into hybrid. Esoteric knowledge transmitted."}
+    ]
+  }
+];
+
+// ── SEGMENTS index by dream id ──────────────────────────
+const SEGMENTS_BY_DREAM = {};
+DREAMS.forEach(d => { SEGMENTS_BY_DREAM[d.id] = d.segments; });
+
+// ── OPENING TREE NODE DEFINITIONS ────────────────────────
+const OPENING_NODES = [
+  { id:'p7',      label:'P7',        icon:ICONS.p7,       x:220, y:60  },
+  { id:'p3',      label:'P3',        icon:ICONS.p3,       x:110, y:110 },
+  { id:'p5',      label:'P5',        icon:ICONS.p5,       x:330, y:110 },
+  { id:'emotions',label:'Emotions',  icon:null, emoji:'🌈', x:55,  y:210 },
+  { id:'colors',  label:'Colors',    icon:null, emoji:'🎨', x:150, y:195 },
+  { id:'info',    label:'Information',icon:null,emoji:'◎', x:285, y:195 },
+  { id:'numbers', label:'Numbers',   icon:null, emoji:'#',  x:385, y:210 },
+  { id:'music',   label:'Music',     icon:null, emoji:'♪',  x:75,  y:320 },
+  { id:'timelens',label:'Time Lens', icon:ICONS.timelens, x:365, y:320 },
+  { id:'custom1', label:'',          icon:null, blank:true, x:140, y:295 },
+  { id:'custom2', label:'',          icon:null, blank:true, x:220, y:270 },
+  { id:'custom3', label:'',          icon:null, blank:true, x:300, y:295 },
+  { id:'avatar',  label:'Pierrot',   icon:ICONS.pierrot,  x:220, y:415, tonic:true },
+];
+
+// ── STATE ────────────────────────────────────────────────
+let treeLevel = 'opening';   // 'opening' | 'constellation' | 'anatomy'
+let activeNodeType = null;   // which Opening node was clicked
+let activeDream = null;      // which dream is being viewed
+let activeSegment = null;    // which segment is highlighted
+let timeLensFilter = '4w';   // current time lens setting
+let clickTimer = null;       // for single vs double click
+
+// ── NAVIGATION ──────────────────────────────────────────
+function showState(id) {
+  document.querySelectorAll('.grimoire-state').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  if (id === 'state-tree') renderOpeningTree();
+  if (id === 'state-open') renderDreamList();
 }
 
-function autoOpenSidebar() {
-  // Called on first open from cover
-  setTimeout(function() {
-    var sb = document.getElementById('orbSidebar');
-    if (sb) { sb.classList.remove('hidden'); sidebarOpen1 = true; }
-  }, 400);
+document.getElementById('cover').onclick = () => showState('state-frontispiece');
+document.getElementById('to-cover').onclick = () => showState('state-closed');
+document.getElementById('to-open').onclick = () => showState('state-open');
+document.getElementById('to-frontispiece-from-open').onclick = () => showState('state-frontispiece');
+document.getElementById('to-tree-from-open').onclick = () => showState('state-tree');
+document.getElementById('to-open-from-tree').onclick = () => showState('state-open');
+
+// Time lens
+document.getElementById('timeLensMini').onclick = () => {
+  document.getElementById('timeLensOverlay').classList.add('open');
+};
+document.getElementById('timeLensClose').onclick = () => {
+  document.getElementById('timeLensOverlay').classList.remove('open');
+};
+document.querySelectorAll('.tlf-btn').forEach(btn => {
+  btn.onclick = function() {
+    document.querySelectorAll('.tlf-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    timeLensFilter = this.dataset.filter;
+    document.getElementById('timeLensOverlay').classList.remove('open');
+    if (treeLevel === 'constellation') renderConstellationTree(activeNodeType);
+  };
+});
+
+// ── DREAMS LIST ─────────────────────────────────────────
+function renderDreamList() {
+  const list = document.getElementById('dreamList');
+  list.innerHTML = '';
+  DREAMS.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'dream-entry';
+    el.innerHTML = `
+      <div class="dream-entry-date">${formatDate(d.date)}</div>
+      <div class="dream-entry-title">${d.title}</div>
+      <div class="dream-entry-meta">${d.type} · ${d.segments.length} segment${d.segments.length!==1?'s':''}</div>
+    `;
+    el.onclick = () => selectDreamForReading(d);
+    list.appendChild(el);
+  });
 }
 
-function toggleSidebar() {
-  var sb = document.getElementById('orbSidebar');
-  var bk = document.getElementById('mainBook');
-  sidebarOpen1 = !sidebarOpen1;
-  if (sidebarOpen1) { sb.classList.remove('hidden'); bk.classList.add('sidebar-open'); }
-  else { sb.classList.add('hidden'); bk.classList.remove('sidebar-open'); }
+function selectDreamForReading(dream) {
+  const panel = document.getElementById('commentaryPanel');
+  panel.innerHTML = `
+    <div style="padding-top:8px;">
+      <div style="font-family:'Cinzel',serif;font-size:10px;color:#8a6520;letter-spacing:2px;margin-bottom:12px;">${dream.title}</div>
+      <div class="commentary-entry">
+        <div class="commentary-source"><span class="commentary-source-icon">✒</span> DREAMER</div>
+        <div class="commentary-text" style="font-style:normal;color:#5a4020;">
+          ${dream.text.substring(0,200)}…
+        </div>
+      </div>
+      <div class="commentary-entry">
+        <div class="commentary-source"><span class="commentary-source-icon">⚙</span> RDS STRUCTURAL</div>
+        <div class="commentary-text">
+          ${dream.segments.map(s => `<strong>${s.label}:</strong> ${s.summary}`).join('<br><br>')}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-function toggleSidebar2() {
-  var sb = document.getElementById('orbSidebar2');
-  var bk = document.getElementById('mainBook2');
-  sidebarOpen2 = !sidebarOpen2;
-  if (sidebarOpen2) { sb.classList.remove('hidden'); bk.classList.add('sidebar-open'); }
-  else { sb.classList.add('hidden'); bk.classList.remove('sidebar-open'); }
+// ── TREE: OPENING ─────────────────────────────────────────
+function renderOpeningTree() {
+  treeLevel = 'opening';
+  activeNodeType = null;
+  activeDream = null;
+  showSplitPage(false);
+  setBreadcrumb([{label:'Avatar Tree', action:null}]);
+  setLevelLabel('Opening Avatar Tree');
+  setStatus('Single-click any node to explore your corpus.');
+
+  const svg = document.getElementById('treeSvg');
+  svg.innerHTML = '';
+
+  // Draw connector lines from avatar to each node
+  OPENING_NODES.filter(n => !n.tonic).forEach(n => {
+    drawConnector(svg, 220, 415, n.x, n.y);
+  });
+
+  // Draw nodes
+  OPENING_NODES.forEach(n => {
+    drawNode(svg, n, false, false, () => handleOpeningNodeClick(n));
+  });
 }
 
-function orbClick(name) {
-  if (gameLevel < 1) { alert('Complete "How the World Sees Me" and "How I See Myself" to unlock your Grimoire.'); }
-}
-function orbClick2(name) {
-  if (gameLevel < 1) { alert('Complete the two Passages first to unlock Dreams and Commentaries.'); }
-}
-
-// Demo: simulate completing demographic
-function completeDemographic() {
-  gameLevel = 1;
-  // Remove gate
-  var gate = document.getElementById('demoGate');
-  if (gate) gate.style.display = 'none';
-  // Show End of Dream button
-  var eod = document.getElementById('eodBtnWrap');
-  if (eod) eod.style.display = 'block';
-  // Unlock orbs
-  unlockOrb('orb-dreams');
-  unlockOrb('orb-commentaries');
-  unlockOrb('orb2-dreams', 'lock2-dreams');
-  unlockOrb('orb2-commentaries', 'lock2-commentaries');
-}
-
-function unlockOrb(orbId, lockId) {
-  var orb = document.getElementById(orbId);
-  if (orb) { orb.classList.remove('locked'); orb.style.cursor = 'pointer'; }
-  if (lockId) {
-    var lock = document.getElementById(lockId);
-    if (lock) lock.style.display = 'none';
+function handleOpeningNodeClick(node) {
+  if (node.tonic) return; // no function on avatar in opening tree
+  if (node.id === 'timelens') {
+    document.getElementById('timeLensOverlay').classList.add('open');
+    return;
   }
+  if (node.blank) return;
+
+  // Single click — drill to constellation
+  clearTimeout(clickTimer);
+  clickTimer = setTimeout(() => {
+    activeNodeType = node.id;
+    renderConstellationTree(node.id);
+  }, 220);
 }
 
-// ── EMOTION PANEL ──
-function openEmotionPanel() {
-  selectedEmotions = [];
-  // unselect all rows
-  var rows = document.querySelectorAll('.gem-row');
-  for (var i = 0; i < rows.length; i++) rows[i].classList.remove('selected');
-  document.getElementById('emotionConfirm').classList.remove('ready');
-  document.getElementById('emotionPanel').classList.add('open');
+// ── TREE: CONSTELLATION ───────────────────────────────────
+function renderConstellationTree(nodeType) {
+  treeLevel = 'constellation';
+  activeNodeType = nodeType;
+  showSplitPage(false);
+
+  const nodeInfo = OPENING_NODES.find(n => n.id === nodeType);
+  const label = nodeInfo ? nodeInfo.label : nodeType;
+
+  setBreadcrumb([
+    {label:'Avatar Tree', action: renderOpeningTree},
+    {label: label + ' Constellation', action: null}
+  ]);
+  setLevelLabel('Constellation · ' + filterLabel(timeLensFilter));
+
+  // Gather matching dreams
+  const matches = getDreamsForNodeType(nodeType, timeLensFilter);
+  setStatus(matches.length + ' dream' + (matches.length!==1?'s':'') + ' · ' + filterLabel(timeLensFilter) + ' · Single-click to enter a dream.');
+
+  const svg = document.getElementById('treeSvg');
+  svg.innerHTML = '';
+
+  // Tonic at base — the node type icon
+  const tonicNode = {
+    id: nodeType + '_tonic',
+    label: label,
+    icon: nodeInfo ? nodeInfo.icon : null,
+    emoji: nodeInfo ? nodeInfo.emoji : null,
+    x: 220, y: 415, tonic: true
+  };
+  drawNode(svg, tonicNode, false, false, () => {
+    // Single-click tonic → return to opening tree
+    renderOpeningTree();
+  });
+
+  // Arrange dreams in arc above tonic
+  const count = matches.length;
+  if (count === 0) {
+    drawTextNode(svg, 220, 200, 'No dreams in this window', '#b5892a66');
+    return;
+  }
+  const positions = arcPositions(count, 220, 200, 160, 80);
+  matches.forEach((dream, i) => {
+    const seg = getRelevantSegment(dream, nodeType);
+    const pos = positions[i];
+    const label = shortTitle(dream.title);
+    drawConnector(svg, 220, 415, pos.x, pos.y);
+    const dNode = {
+      id: dream.id,
+      label: label,
+      icon: null,
+      emoji: getNodeEmoji(nodeType, dream),
+      x: pos.x, y: pos.y
+    };
+    drawNode(svg, dNode, false, false, () => {
+      activeDream = dream;
+      activeSegment = seg;
+      renderAnatomyTree(dream, nodeType);
+    });
+  });
 }
 
-function toggleGem(row, label) {
-  var idx = selectedEmotions.indexOf(label);
-  if (idx === -1) {
-    selectedEmotions.push(label);
-    row.classList.add('selected');
+// ── TREE: INDIVIDUAL DREAM ANATOMY ────────────────────────
+function renderAnatomyTree(dream, pivotFrom) {
+  treeLevel = 'anatomy';
+  activeDream = dream;
+  const nodeInfo = OPENING_NODES.find(n => n.id === (pivotFrom||activeNodeType));
+  const pivotLabel = nodeInfo ? nodeInfo.label : (pivotFrom||'');
+
+  setBreadcrumb([
+    {label:'Avatar Tree', action: renderOpeningTree},
+    {label: pivotLabel + ' Constellation', action: () => renderConstellationTree(pivotFrom||activeNodeType)},
+    {label: shortTitle(dream.title), action: null}
+  ]);
+  setLevelLabel('Dream Anatomy');
+  setStatus('Hover over a node to highlight text · Single-click to pivot · Double-click tonic to generalize');
+
+  // Show split page
+  showSplitPage(true);
+
+  // Fill dream text right page
+  renderDreamText(dream);
+
+  const svg = document.getElementById('treeSvg');
+  svg.innerHTML = '';
+  svg.setAttribute('viewBox', '0 0 440 480');
+
+  // Build visible partials from segments
+  const partials = buildPartialsFromDream(dream);
+
+  // Tonic at base — the specific dream's key event (pivotFrom node type)
+  const tonicSeg = dream.segments[0];
+  const tonicLabel = tonicSeg ? truncate(tonicSeg.p7 || dream.title, 12) : dream.title;
+
+  const tonicNode = {
+    id: 'tonic',
+    label: tonicLabel,
+    icon: nodeInfo ? nodeInfo.icon : null,
+    emoji: nodeInfo ? nodeInfo.emoji : null,
+    x: 220, y: 415, tonic: true
+  };
+
+  // Single click tonic → return to constellation
+  // Double click tonic → generalize (all time, all corpus)
+  let tonicClickCount = 0;
+  let tonicTimer = null;
+  const handleTonicClick = () => {
+    tonicClickCount++;
+    if (tonicClickCount === 1) {
+      tonicTimer = setTimeout(() => {
+        tonicClickCount = 0;
+        renderConstellationTree(pivotFrom||activeNodeType);
+      }, 280);
+    } else if (tonicClickCount === 2) {
+      clearTimeout(tonicTimer);
+      tonicClickCount = 0;
+      // Generalize — all time
+      timeLensFilter = 'all';
+      document.querySelectorAll('.tlf-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.filter === 'all');
+      });
+      showSplitPage(false);
+      renderConstellationTree(pivotFrom||activeNodeType);
+    }
+  };
+  drawNode(svg, tonicNode, false, false, handleTonicClick);
+
+  // Arrange partial nodes in arc
+  const count = partials.length;
+  const positions = arcPositions(count, 220, 180, 155, 90);
+  partials.forEach((p, i) => {
+    const pos = positions[i];
+    drawConnector(svg, 220, 415, pos.x, pos.y);
+    const hasAnchor = !!p.anchor;
+    const pNode = {
+      id: p.id,
+      label: p.label,
+      icon: p.icon || null,
+      emoji: p.emoji || null,
+      x: pos.x, y: pos.y,
+      dimmed: !hasAnchor
+    };
+    drawNode(svg, pNode, !hasAnchor, false, (e) => {
+      // Single click non-tonic node → cross-pivot to ALL TIME constellation of that type
+      if (p.pivotTarget) {
+        timeLensFilter = 'all';
+        document.querySelectorAll('.tlf-btn').forEach(b => {
+          b.classList.toggle('active', b.dataset.filter === 'all');
+        });
+        showSplitPage(false);
+        activeNodeType = p.pivotTarget;
+        renderConstellationTree(p.pivotTarget);
+      }
+    }, () => {
+      // Hover → highlight text
+      if (hasAnchor) highlightAnchor(p.anchor);
+      else clearHighlight();
+    }, () => {
+      clearHighlight();
+    });
+  });
+}
+
+// ── DREAM TEXT ───────────────────────────────────────────
+function renderDreamText(dream) {
+  const header = document.getElementById('dreamTextHeader');
+  header.innerHTML = `
+    <div class="dream-text-date">${formatDate(dream.date)}</div>
+    <div class="dream-text-title">${dream.title}</div>
+  `;
+  const body = document.getElementById('dreamSacredText');
+  // Wrap text in spans for highlighting
+  const anchors = dream.segments.map(s => s.p7_anchor).filter(Boolean);
+  let text = dream.text;
+  anchors.forEach((anchor, idx) => {
+    if (anchor && text.includes(anchor)) {
+      text = text.replace(anchor, `<span class="hl" data-anchor="${idx}">${anchor}</span>`);
+    }
+  });
+  body.innerHTML = `<p>${text}</p>`;
+
+  document.getElementById('dreamTextBack').onclick = () => {
+    showSplitPage(false);
+    renderConstellationTree(activeNodeType);
+  };
+}
+
+function highlightAnchor(anchor) {
+  const body = document.getElementById('dreamSacredText');
+  body.querySelectorAll('.hl').forEach(el => {
+    el.style.background = el.textContent.includes(anchor.substring(0,20))
+      ? 'rgba(212,168,67,.6)' : 'rgba(212,168,67,.2)';
+  });
+}
+function clearHighlight() {
+  document.getElementById('dreamSacredText').querySelectorAll('.hl').forEach(el => {
+    el.style.background = 'rgba(212,168,67,.4)';
+  });
+}
+
+// ── SPLIT PAGE TOGGLE ────────────────────────────────────
+function showSplitPage(show) {
+  document.getElementById('treeInfoPanel').style.display = show ? 'none' : 'flex';
+  document.getElementById('treeDreamTextPanel').style.display = show ? 'flex' : 'none';
+  // Right page bg
+  const right = document.getElementById('treeRightPage');
+  if (show) {
+    right.style.background = '#f0e6c8';
+    right.style.backgroundImage = 'none';
   } else {
-    selectedEmotions.splice(idx, 1);
-    row.classList.remove('selected');
+    right.style.background = '';
+    right.style.backgroundImage = '';
   }
-  var btn = document.getElementById('emotionConfirm');
-  if (selectedEmotions.length > 0) btn.classList.add('ready');
-  else btn.classList.remove('ready');
 }
 
-function confirmEmotions() {
-  if (selectedEmotions.length === 0) return;
-  // Log to console (backend write goes here in Phase B)
-  console.log('Emotional tones logged:', selectedEmotions);
-  // Close panel
-  document.getElementById('emotionPanel').classList.remove('open');
-  selectedEmotions = [];
+// ── SVG DRAWING HELPERS ───────────────────────────────────
+const NS = 'http://www.w3.org/2000/svg';
+const NODE_R = 34;
+
+function drawConnector(svg, x1, y1, x2, y2) {
+  const line = document.createElementNS(NS, 'line');
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+  line.setAttribute('class', 'tree-connector');
+  svg.appendChild(line);
 }
+
+function drawNode(svg, node, dimmed, active, onClick, onHover, onLeave) {
+  const g = document.createElementNS(NS, 'g');
+  g.setAttribute('class', 'tree-node' + (node.tonic?' tonic':'') + (dimmed?' dimmed':''));
+  g.setAttribute('transform', `translate(${node.x},${node.y})`);
+
+  const circle = document.createElementNS(NS, 'circle');
+  circle.setAttribute('class', 'node-bg');
+  circle.setAttribute('r', NODE_R);
+  g.appendChild(circle);
+
+  if (node.blank) {
+    // Pearl blank sphere
+    circle.setAttribute('style', 'fill:#e8dfc8;stroke:#b5892a44;stroke-width:1.5;');
+  } else if (node.icon) {
+    // Image icon
+    const img = document.createElementNS(NS, 'image');
+    img.setAttribute('href', node.icon);
+    img.setAttribute('x', -NODE_R); img.setAttribute('y', -NODE_R);
+    img.setAttribute('width', NODE_R*2); img.setAttribute('height', NODE_R*2);
+    img.setAttribute('clip-path', 'circle()');
+    img.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+    g.appendChild(img);
+  } else if (node.emoji) {
+    // Emoji / text icon
+    const txt = document.createElementNS(NS, 'text');
+    txt.setAttribute('text-anchor', 'middle');
+    txt.setAttribute('dominant-baseline', 'central');
+    txt.setAttribute('font-size', node.id === 'numbers' ? '16' : '22');
+    txt.setAttribute('y', '0');
+    txt.textContent = node.emoji;
+    g.appendChild(txt);
+  }
+
+  if (node.label) {
+    const lbl = document.createElementNS(NS, 'text');
+    lbl.setAttribute('class', 'node-label' + (node.tonic?' tonic-label':''));
+    lbl.setAttribute('y', NODE_R + 13);
+    lbl.textContent = node.label.length > 10 ? node.label.substring(0,10)+'…' : node.label;
+    g.appendChild(lbl);
+  }
+
+  if (onClick) g.addEventListener('click', onClick);
+  if (onHover) g.addEventListener('mouseenter', onHover);
+  if (onLeave) g.addEventListener('mouseleave', onLeave);
+
+  svg.appendChild(g);
+}
+
+function drawTextNode(svg, x, y, text, fill) {
+  const t = document.createElementNS(NS, 'text');
+  t.setAttribute('x', x); t.setAttribute('y', y);
+  t.setAttribute('text-anchor', 'middle');
+  t.setAttribute('font-family', 'Cinzel');
+  t.setAttribute('font-size', '11');
+  t.setAttribute('fill', fill || '#b5892a66');
+  t.setAttribute('letter-spacing', '2');
+  t.textContent = text;
+  svg.appendChild(t);
+}
+
+// ── LAYOUT HELPERS ─────────────────────────────────────────
+function arcPositions(count, cx, cy, rx, ry) {
+  if (count === 0) return [];
+  const positions = [];
+  const startAngle = -Math.PI;
+  const endAngle = 0;
+  for (let i = 0; i < count; i++) {
+    const t = count === 1 ? 0.5 : i / (count - 1);
+    const angle = startAngle + t * (endAngle - startAngle);
+    positions.push({
+      x: Math.round(cx + rx * Math.cos(angle)),
+      y: Math.round(cy + ry * Math.sin(angle))
+    });
+  }
+  return positions;
+}
+
+// ── DATA HELPERS ──────────────────────────────────────────
+function getDreamsForNodeType(nodeType, filter) {
+  let dreams = DREAMS;
+
+  // Filter by time
+  if (filter !== 'all') {
+    const now = new Date('2026-06-02');
+    const days = {
+      '4w': 28, '3m': 90, '1y': 365
+    }[filter] || 28;
+    const cutoff = new Date(now.getTime() - days * 86400000);
+    dreams = dreams.filter(d => new Date(d.date) >= cutoff);
+  }
+
+  // Filter by node relevance
+  switch(nodeType) {
+    case 'p7': return dreams.filter(d => d.segments.some(s => s.p7 && s.p7 !== 'None'));
+    case 'p3': return dreams.filter(d => d.segments.some(s => s.p3));
+    case 'p5': return dreams.filter(d => d.segments.some(s => s.p5));
+    case 'emotions': return dreams;
+    case 'colors': return dreams.filter(d => /red|blue|yellow|green|gold|black|white/i.test(d.text));
+    case 'numbers': return dreams.filter(d => /\d+|\$\d|three|four|five/i.test(d.text));
+    case 'music': return dreams.filter(d => /music|song|play|sound|la selva/i.test(d.text));
+    case 'info': return dreams.filter(d => d.type === 'information');
+    default: return dreams;
+  }
+}
+
+function getRelevantSegment(dream, nodeType) {
+  switch(nodeType) {
+    case 'p7': return dream.segments.find(s => s.p7 && s.p7 !== 'None') || dream.segments[0];
+    case 'p3': return dream.segments.find(s => s.p3) || dream.segments[0];
+    case 'p5': return dream.segments.find(s => s.p5) || dream.segments[0];
+    default: return dream.segments[0];
+  }
+}
+
+function buildPartialsFromDream(dream) {
+  const partials = [];
+  const segs = dream.segments;
+  const allP3 = [...new Set(segs.map(s => s.p3).filter(Boolean))];
+  const allP5 = [...new Set(segs.map(s => s.p5).filter(Boolean))];
+  const allP7 = segs.filter(s => s.p7 && s.p7 !== 'None');
+  const allP11 = segs.filter(s => s.p11);
+
+  if (allP7.length > 0) partials.push({
+    id:'p7', label:'P7', icon:ICONS.p7,
+    anchor: allP7[0].p7_anchor, pivotTarget:'p7'
+  });
+  if (allP3.length > 0) partials.push({
+    id:'p3', label:'P3 · ' + truncate(allP3[0],8), icon:ICONS.p3,
+    anchor: allP3[0], pivotTarget:'p3'
+  });
+  if (allP5.length > 0) partials.push({
+    id:'p5', label:'P5 · ' + truncate(allP5[0],8), icon:ICONS.p5,
+    anchor: allP5[0], pivotTarget:'p5'
+  });
+  if (allP11.length > 0) partials.push({
+    id:'p11', label:'P11', icon:null, emoji:'⚡',
+    anchor: allP11[0].p11, pivotTarget:null
+  });
+
+  // Add segments as structural nodes
+  segs.forEach((s, i) => {
+    if (i > 0) partials.push({
+      id:'seg'+i, label:'Seg '+s.num, icon:null, emoji:'§',
+      anchor: s.p7_anchor || null, pivotTarget:null
+    });
+  });
+
+  // Pad to fill arc nicely (min 4 nodes)
+  if (partials.length < 3) {
+    partials.push({id:'p16', label:'P16', icon:null, emoji:'◯', anchor:null, pivotTarget:null});
+    partials.push({id:'p4', label:'P4', icon:null, emoji:'⬡', anchor:null, pivotTarget:null});
+  }
+
+  return partials;
+}
+
+function getNodeEmoji(nodeType, dream) {
+  const text = dream.text.toLowerCase();
+  switch(nodeType) {
+    case 'p7': {
+      const seg = dream.segments.find(s => s.p7 && s.p7 !== 'None');
+      if (!seg) return '?';
+      const cat = seg.p7_cat;
+      if (cat === 'biological') return '🐍';
+      if (cat === 'environmental') return '🌊';
+      if (cat === 'social') return '👤';
+      if (cat === 'systemic') return '⚙';
+      return '◆';
+    }
+    case 'p3': {
+      const seg = dream.segments.find(s => s.p3);
+      return seg ? '◉' : '?';
+    }
+    case 'p5': return '▣';
+    case 'colors': {
+      if (text.includes('red')) return '🔴';
+      if (text.includes('blue')) return '🔵';
+      if (text.includes('green')) return '🟢';
+      if (text.includes('gold')) return '🟡';
+      return '○';
+    }
+    case 'music': return '♪';
+    default: return '◆';
+  }
+}
+
+// ── UI HELPERS ────────────────────────────────────────────
+function setBreadcrumb(items) {
+  const el = document.getElementById('treeBreadcrumb');
+  el.innerHTML = items.map((item, i) => {
+    const sep = i < items.length - 1 ? '<span class="sep"> › </span>' : '';
+    if (item.action) {
+      return `<span onclick="(${item.action.toString()})()">${item.label}</span>${sep}`;
+    }
+    return `<span style="opacity:.5;cursor:default;">${item.label}</span>${sep}`;
+  }).join('');
+}
+
+function setLevelLabel(text) {
+  document.getElementById('treeLevelLabel').textContent = text;
+}
+
+function setStatus(text) {
+  document.getElementById('treeStatus').textContent = text;
+}
+
+function filterLabel(f) {
+  return {
+    '4w': 'Last 4 Weeks', '3m': 'Last 3 Months',
+    '1y': 'Last Year', 'all': 'All Time'
+  }[f] || f;
+}
+
+function formatDate(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('en-US', {year:'numeric', month:'long', day:'numeric'}).toUpperCase();
+}
+
+function shortTitle(title) {
+  const parts = title.split('—');
+  const base = parts.length > 1 ? parts[1].trim() : title;
+  return truncate(base, 14);
+}
+
+function truncate(str, len) {
+  if (!str) return '';
+  return str.length > len ? str.substring(0, len) + '…' : str;
+}
+
+// ── INIT ─────────────────────────────────────────────────
+renderDreamList();
 </script>
-
 </body>
 </html>
