@@ -476,6 +476,68 @@ body {
   height: 100% !important;
 }
 
+
+/* ── FULLSCREEN BUTTON ───────────────────────────────────── */
+.fs-btn {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 9999;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #d4a843, #8a5a10);
+  border: 2px solid #b5892a;
+  box-shadow: 0 2px 10px rgba(0,0,0,.6), inset 0 1px 2px rgba(255,220,100,.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow .2s, transform .15s;
+}
+.fs-btn:hover {
+  box-shadow: 0 2px 16px rgba(212,168,67,.7), inset 0 1px 2px rgba(255,220,100,.4);
+  transform: scale(1.08);
+}
+.fs-btn svg {
+  width: 18px; height: 18px;
+  fill: none;
+  stroke: #1a0a00;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── CLASS-BASED FULLSCREEN SCALING ── */
+body.is-fullscreen {
+  overflow: hidden;
+}
+body.is-fullscreen .grimoire-state.active {
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+body.is-fullscreen .book {
+  width: 96vw !important;
+  height: 90vh !important;
+  max-width: 1800px !important;
+  min-width: unset !important;
+}
+body.is-fullscreen .page {
+  height: 100% !important;
+  flex: 1 !important;
+}
+body.is-fullscreen .page-inner {
+  height: 100% !important;
+  max-height: 100% !important;
+}
+body.is-fullscreen .cover-book {
+  transform: scale(1.4);
+  transform-origin: center center;
+}
+
 </style>
 </head>
 <body>
@@ -1378,9 +1440,8 @@ renderDreamList();
 </script>
 
 <!-- ── FULLSCREEN BUTTON ─────────────────────────────────── -->
-<button class="fs-btn" id="fsBtn" title="Toggle fullscreen">
+<button class="fs-btn" id="fsBtn" title="Enter fullscreen">
   <svg id="fsIcon" viewBox="0 0 24 24">
-    <!-- expand icon (default) -->
     <polyline points="15 3 21 3 21 9"/>
     <polyline points="9 21 3 21 3 15"/>
     <line x1="21" y1="3" x2="14" y2="10"/>
@@ -1392,43 +1453,62 @@ renderDreamList();
 (function() {
   const btn = document.getElementById('fsBtn');
   const icon = document.getElementById('fsIcon');
+  let isFs = false;
 
-  const expandIcon = `
-    <polyline points="15 3 21 3 21 9"/>
-    <polyline points="9 21 3 21 3 15"/>
-    <line x1="21" y1="3" x2="14" y2="10"/>
-    <line x1="3" y1="21" x2="10" y2="14"/>
-  `;
-  const collapseIcon = `
-    <polyline points="4 14 10 14 10 20"/>
-    <polyline points="20 10 14 10 14 4"/>
-    <line x1="10" y1="14" x2="3" y2="21"/>
-    <line x1="21" y1="3" x2="14" y2="10"/>
-  `;
+  const expandIcon = `<polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>`;
+  const collapseIcon = `<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="3" y2="21"/><line x1="21" y1="3" x2="14" y2="10"/>`;
 
-  function updateIcon() {
-    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
-    icon.innerHTML = isFs ? collapseIcon : expandIcon;
-    btn.title = isFs ? 'Exit fullscreen' : 'Enter fullscreen';
+  function enterFs() {
+    const el = document.documentElement;
+    const p = el.requestFullscreen
+      ? el.requestFullscreen()
+      : el.webkitRequestFullscreen
+        ? (el.webkitRequestFullscreen(), Promise.resolve())
+        : el.mozRequestFullScreen
+          ? (el.mozRequestFullScreen(), Promise.resolve())
+          : Promise.reject('no API');
+    Promise.resolve(p).then(() => {
+      document.body.classList.add('is-fullscreen');
+      isFs = true;
+      icon.innerHTML = collapseIcon;
+      btn.title = 'Exit fullscreen';
+    }).catch(() => {
+      // fallback: just scale with CSS class even if native FS blocked
+      document.body.classList.add('is-fullscreen');
+      isFs = true;
+      icon.innerHTML = collapseIcon;
+      btn.title = 'Exit fullscreen';
+    });
   }
 
-  btn.addEventListener('click', function() {
-    const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement);
-    if (!isFs) {
-      const el = document.documentElement;
-      if (el.requestFullscreen) el.requestFullscreen().catch(()=>{});
-      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-      else if (el.mozRequestFullScreen) el.mozRequestFullScreen();
-    } else {
+  function exitFs() {
+    if (document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement) {
       if (document.exitFullscreen) document.exitFullscreen();
       else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
       else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
     }
+    document.body.classList.remove('is-fullscreen');
+    isFs = false;
+    icon.innerHTML = expandIcon;
+    btn.title = 'Enter fullscreen';
+  }
+
+  btn.addEventListener('click', function() {
+    isFs ? exitFs() : enterFs();
   });
 
-  document.addEventListener('fullscreenchange', updateIcon);
-  document.addEventListener('webkitfullscreenchange', updateIcon);
-  document.addEventListener('mozfullscreenchange', updateIcon);
+  // Sync if user presses Escape
+  function onFsChange() {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement) {
+      document.body.classList.remove('is-fullscreen');
+      isFs = false;
+      icon.innerHTML = expandIcon;
+      btn.title = 'Enter fullscreen';
+    }
+  }
+  document.addEventListener('fullscreenchange', onFsChange);
+  document.addEventListener('webkitfullscreenchange', onFsChange);
+  document.addEventListener('mozfullscreenchange', onFsChange);
 })();
 </script>
 
